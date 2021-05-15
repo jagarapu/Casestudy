@@ -71,13 +71,15 @@ class OfficeController extends AbstractController
      *
      * @Route("/list", name="office_list")
      */
-    public function list(UserManager $userManager)
+    public function list()
     {
         $em = $this->getDoctrine()->getManager();
         $offices = $em->getRepository(Office::class)->findAll();
+        $officeWiseOccupancy = $em->getRepository(OfficeOccupancy::class)->fetchOfficeOccupancyData();
 
         return $this->render('office/list.html.twig', [
             'offices' => $offices,
+            'officeWiseOccupancy' => $officeWiseOccupancy,
         ]);
     }
 
