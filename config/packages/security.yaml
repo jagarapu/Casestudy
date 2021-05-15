@@ -3,6 +3,10 @@ security:
         App\Entity\User:
             algorithm: auto
 
+    role_hierarchy:
+        ROLE_EMPLOYEE: ROLE_EMPLOYEE
+        ROLE_ADMIN: [ ROLE_USER, ROLE_EMPLOYEE, ROLE_ALLOWED_TO_SWITCH ]
+
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
         # used to reload user from session & other features (e.g. switch_user)
@@ -15,15 +19,20 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
-            anonymous: lazy
             provider: app_user_provider
+            pattern: ^/
+            anonymous: true
+            form_login:
+                default_target_path: home_page
+                login_path: app_login
+                check_path: app_login
+            logout:
+                path: app_logout
+                target: app_login
+
             guard:
                 authenticators:
                     - App\Security\LoginFormAuthenticator
-            logout:
-                path: app_logout
-                # where to redirect after logout
-                # target: app_any_route
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
@@ -34,5 +43,7 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/crm-forgot-password, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/techm, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/$, roles: IS_AUTHENTICATED_FULLY }

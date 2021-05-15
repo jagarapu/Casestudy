@@ -6,12 +6,16 @@ use App\Repository\OfficeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass=OfficeRepository::class)
  */
 class Office
 {
+    use TimestampableEntity;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -44,9 +48,27 @@ class Office
      */
     private $officeOccupancies;
 
+    /**
+     * @Gedmo\Blameable(on="create")
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $createdBy;
+
+    /**
+     * @Gedmo\Blameable(on="update")
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $updatedBy;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $isEnabled = false;
+
     public function __construct()
     {
         $this->officeOccupancies = new ArrayCollection();
+        $this->isEnabled = true;
     }
 
     public function getId(): ?int
@@ -128,6 +150,42 @@ class Office
                 $officeOccupancy->setOffice(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCreatedBy(): ?string
+    {
+        return $this->createdBy;
+    }
+
+    public function setCreatedBy(?string $createdBy): self
+    {
+        $this->createdBy = $createdBy;
+
+        return $this;
+    }
+
+    public function getUpdatedBy(): ?string
+    {
+        return $this->updatedBy;
+    }
+
+    public function setUpdatedBy(?string $updatedBy): self
+    {
+        $this->updatedBy = $updatedBy;
+
+        return $this;
+    }
+
+    public function getIsEnabled(): ?bool
+    {
+        return $this->isEnabled;
+    }
+
+    public function setIsEnabled(?bool $isEnabled): self
+    {
+        $this->isEnabled = $isEnabled;
 
         return $this;
     }

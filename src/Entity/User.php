@@ -6,13 +6,24 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  */
 class User implements UserInterface
 {
+    use TimestampableEntity;
+
+    const PASSWORD_LENGTH = 8;
+
+    const ROLE_DEFAULT = 'ROLE_USER';
+    const ROLE_ADMIN = 'ROLE_SUPER_ADMIN';
+    const ROLE_EMPLOYEE = 'ROLE_EMPLOYEE';
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -32,7 +43,7 @@ class User implements UserInterface
 
     /**
      * @var string The hashed password
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", length=255)
      */
     private $password;
 
@@ -57,21 +68,13 @@ class User implements UserInterface
     private $isEnabled;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $createdAt;
-
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $updatedAt;
-
-    /**
+     * @Gedmo\Blameable(on="create")
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $createdBy;
 
     /**
+     * @Gedmo\Blameable(on="update")
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $updatedBy;
@@ -90,6 +93,8 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=255)
      */
     private $salt;
+
+    private $rawPassword;
 
     public function __construct()
     {
@@ -160,7 +165,7 @@ class User implements UserInterface
      */
     public function getSalt(): ?string
     {
-        return null;
+        return $this->salt;
     }
 
     /**
@@ -168,8 +173,7 @@ class User implements UserInterface
      */
     public function eraseCredentials()
     {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
+         $this->rawPassword = null;
     }
 
     public function getFirstName(): ?string
@@ -216,30 +220,6 @@ class User implements UserInterface
     public function setIsEnabled(?bool $isEnabled): self
     {
         $this->isEnabled = $isEnabled;
-
-        return $this;
-    }
-
-    public function getCreatedAt(): ?\DateTimeInterface
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(?\DateTimeInterface $createdAt): self
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    public function getUpdatedAt(): ?\DateTimeInterface
-    {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
-    {
-        $this->updatedAt = $updatedAt;
 
         return $this;
     }
@@ -316,4 +296,33 @@ class User implements UserInterface
 
         return $this;
     }
+
+    public function encodePassword(PasswordEncoderInterface $encoder)
+    {
+        if ($this->rawPassword) {
+            $this->salt = sha1(uniqid(mt_rand()));
+            $this->password = $encoder->encodePassword($this->rawPassword, $this->salt);
+
+            $this->eraseCredentials();
+        }
+    }
+
+    public function generatePassword()
+    {
+        $password = substr(md5(uniqid(mt_rand(), true)), 0, self::PASSWORD_LENGTH);
+        $this->rawPassword = $password;
+
+        return $password;
+    }
+
+    public function setRawPassword($rawPassword)
+    {
+        $this->rawPassword = $rawPassword;
+    }
+
+    public function getRawPassword()
+    {
+        return $this->rawPassword;
+    }
+
 }
