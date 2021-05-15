@@ -1,42 +1,147 @@
-{% extends 'base.html.twig' %}
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Tech Mahindra</title>
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('login') }}
+    {% endblock %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+</head>
 
-{% block title %}Log in!{% endblock %}
+<body>
+{% set infoMessages = [] %}
+{% set successMessages = [] %}
+{% set errorMessages = [] %}
+{% if app.session and app.session.flashBag.has('flashInfo') %}
+    {% for flashMessage in app.session.flashbag.get('flashInfo') %}
+        {% set infoMessages = infoMessages|merge([flashMessage]) %}
+    {% endfor %}
+    <div id="infoMessages" data-id="{{ infoMessages|json_encode() }}"></div>
+{% endif %}
 
-{% block body %}
-<form method="post">
-    {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
+{% if app.session and  app.session.flashBag.has('flashSuccess') %}
+    {% for flashMessage in app.session.flashbag.get('flashSuccess') %}
+        {% set successMessages = successMessages|merge([flashMessage]) %}
+    {% endfor %}
+    <div id="successMessages" data-id="{{ successMessages|json_encode() }}"></div>
+{% endif %}
 
-    {% if app.user %}
-        <div class="mb-3">
-            You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
+{% if app.session and app.session.flashBag.has('flashError') %}
+    {% for flashMessage in app.session.flashbag.get('flashError') %}
+        {% set errorMessages = errorMessages|merge([flashMessage]) %}
+    {% endfor %}
+    <div id="errorMessages" data-id="{{ errorMessages|json_encode() }}"></div>
+{% endif %}
+<div class="main-wrapper">
+    <div class="preloader">
+        <div class="lds-ripple">
+            <div class="lds-pos"></div>
+            <div class="lds-pos"></div>
         </div>
-    {% endif %}
+    </div>
 
-    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-    <label for="inputUsername">Username</label>
-    <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control" autocomplete="username" required autofocus>
-    <label for="inputPassword">Password</label>
-    <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
-
-    <input type="hidden" name="_csrf_token"
-           value="{{ csrf_token('authenticate') }}"
-    >
-
-    {#
-        Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
-        See https://symfony.com/doc/current/security/remember_me.html
-
-        <div class="checkbox mb-3">
-            <label>
-                <input type="checkbox" name="_remember_me"> Remember me
-            </label>
+    <div class="auth-wrapper d-flex no-block justify-content-center align-items-center"
+         style="background:url({{ asset('build/assets/public/image/login-bg.jpg') }}) no-repeat center center;">
+        <div class="auth-box">
+            <div id="loginform">
+                <div class="logo">
+{#                    <span class="db"><img#}
+{#                                src="{{ asset('build/assets/public/image/logo-text.png') | imagine_filter('logo') }}"#}
+{#                                alt="homepage" class="dark-logo"/></span>#}
+                    <h5 class="font-medium mb-3">Sign In</h5>
+                </div>
+                <!-- Form -->
+                <div class="row">
+                    <div class="col-12">
+                        <form action="{{ path('app_login') }}" method="post" class="form-horizontal mt-3" id="loginform"
+                              novalidate>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1"><i class="fa fa-user"></i></span>
+                                </div>
+                                <input type="text" value="{{ last_username }}" name="username" id="inputUsername"
+                                       class="form-control form-control-lg" placeholder="Username" aria-label="Username"
+                                       aria-describedby="basic-addon1" required autofocus>
+                            </div>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon2"><i class="fas fa-key"></i></span>
+                                </div>
+                                {# <input type="password" name="_password" id="password"class="form-control form-control-lg" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1"> #}
+                                <input type="password" name="password" id="inputPassword"
+                                       class="form-control form-control-lg" placeholder="Password" aria-label="Password"
+                                       aria-describedby="basic-addon1" required>
+                                <input type="hidden" name="_csrf_token"
+                                       value="{{ csrf_token('authenticate') }}"
+                                >
+                            </div>
+                            {% if error %}
+                                <div class="red">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                            {% endif %}
+                            <div class="form-group row">
+                                <div class="col-md-12">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="customCheck1">
+                                        <label class="custom-control-label" for="customCheck1">Remember me</label>
+                                        <a href="javascript:void(0)" id="to-recover" class="text-dark float-right"><i
+                                                    class="fa fa-lock mr-1"></i> Forgot password?</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group text-center">
+                                <div class="col-xs-12 pb-3">
+                                    <button class="btn btn-block btn-lg btn-info" type="submit">Log In</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div id="recoverform">
+                <div class="logo">
+{#                    <span class="db"><img#}
+{#                                src="{{ asset('build/assets/public/image/logo-text.png') | imagine_filter('logo') }}"#}
+{#                                alt="logo"/></span>#}
+                    <h5 class="font-medium mb-3">Recover Password</h5>
+                    <span>Enter your Email and instructions will be sent to you!</span>
+                </div>
+                <div class="row mt-3">
+                    <!-- Form -->
+                    <form class="password-reset-form col-12" action="{{ path('forgot_password') }}" novalidate>
+                        <!-- email -->
+                        <div class="form-group row">
+                            <div class="col-12">
+                                <input class="email-field form-control form-control-lg" type="email" name="email"
+                                       required="" placeholder="Enter email">
+                            </div>
+                        </div>
+                        <!-- pwd -->
+                        <div class="row mt-3">
+                            <div class="col-8">
+                                <button class="btn btn-block btn-lg btn-success password-reset" type="submit"
+                                        name="action">Reset
+                                </button>
+                            </div>
+                            <div class="col-4">
+                                <a class="btn btn-block btn-lg btn-danger password-reset"
+                                   href="{{ path('app_login') }}">Cancel</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-    #}
-
-    <button class="btn btn-lg btn-primary" type="submit">
-        Sign in
-    </button>
-</form>
+    </div>
+</div>
+{% block javascripts %}
+    {{ encore_entry_script_tags('login') }}
 {% endblock %}
+</body>
+
+</html>

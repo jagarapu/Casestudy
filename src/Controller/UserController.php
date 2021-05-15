@@ -171,4 +171,20 @@ class UserController extends AbstractController
         );
     }
 
+    /**
+     * @Route("/my-profile", name="my_profile")
+     */
+    public function myProfile(Request $request)
+    {
+        // logged in user
+        $user = $this->getUser();
+
+        return $this->render(
+            'user/my_profile.html.twig',
+            [
+                'user' => $user,
+            ]
+        );
+    }
+
 }

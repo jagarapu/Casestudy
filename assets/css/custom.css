@@ -1,0 +1,515 @@
+body{
+    background:#eef5f9 !important
+}
+#main-wrapper {
+    height: 100% !important;
+}
+#page-wrapper {
+    
+    height: 100%  !important;
+}
+
+a>.fa{
+    color: #8cafcd;
+    text-decoration: none;
+}
+
+.fa-white{
+    color: white !important;
+    text-decoration: none;
+}
+
+.fa-red{
+    color: red !important;
+    text-decoration: none;
+}
+
+.table thead th, .table th {
+    font-weight: 700;
+}
+
+.table td {
+    font-size: 0.9em;
+}
+
+
+/* here you can put your own css to customize and override the theme */
+.ajax-loader-gif {
+    background: url("../image/ajax-document-loader.gif") no-repeat;
+    height: 12px;
+    line-height: 12px;
+    background-position: center;
+    width: 60px;
+    display: inline-block;
+}
+
+.ajax-loader-long {
+    background: url("../image/loader-horizontal.gif") no-repeat;
+    height: 12px;
+    line-height: 12px;
+    background-position: center;
+    width: 100%;
+    display: inline-block;
+}
+
+.form .form-actions {
+    clear: both;
+}
+
+.chosen-container {
+    width: 98% !important;
+}
+
+.chosen-container-single .chosen-search input[type="text"] {
+    padding: 4px 20px 4px 5px !important;
+    width: 100% !important;
+}
+
+.chosen-container input[type='text'] {
+    padding: 2px 4% !important;
+    width: 90% !important;
+    margin: 5px 2%;
+}
+
+.clear-both {
+    clear: both;
+}
+
+.clear-left {
+    clear: left;
+}
+
+.clear-right {
+    clear: right;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-right {
+    text-align: right;
+}
+
+/*END common css*/
+
+.multiselect-container > li > a > label.checkbox {
+    margin-left: 25px !important;
+    padding-left: 0px !important;
+}
+
+.multiselect-container .checkbox input[type="checkbox"] {
+    margin-left: -17px !important;
+}
+
+ul.multiselect-container.dropdown-menu {
+    max-width: 95% !important;
+}
+
+.page-loading-panel {
+    min-width: 135px;
+    padding: 7px 4px 7px 31px !important;
+    text-align: center;
+    font-size: 13px;
+    vertical-align: middle;
+    -webkit-box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+    background: url("../image/loading-spinner-grey.gif");
+    background-repeat: no-repeat;
+    background-position: 12px;
+    border: 1px solid #ddd;
+    background-color: #eee;
+    color: #333;
+}
+
+.toast .toast-close-button {
+    background-image: url("../image/portlet-remove-icon-white.png") !important;
+}
+
+.date-picker[readonly="readonly"] {
+    cursor: pointer;
+}
+
+.cursor-text {
+    cursor: text !important;
+}
+
+.dropdown-menu li > button {
+    clear: both;
+    color: #555;
+    display: block;
+    font-weight: 300;
+    line-height: 18px;
+    padding-bottom: 8px;
+    padding-left: 14px;
+    padding-right: 14px;
+    padding-top: 8px;
+    text-decoration-color: -moz-use-text-color;
+    text-decoration-line: none;
+    text-decoration-style: solid;
+    white-space: nowrap;
+    border: 0px !important;
+    width: 100%;
+    background-color: #ffffff;
+    text-align: left;
+}
+
+
+.focus_style select:focus, .focus_style input:focus, .focus_style textarea:focus, .focus_style .btn:focus {
+    border: 1px solid #5897fb;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.dropdown-menu li > button:hover {
+    background-color: #f6f6f6;
+}
+
+.red_border {
+    border: 1px solid red !important;
+}
+
+.select2-selection__rendered {
+    font-size: 11px;
+}
+
+.form-inline .radio, .form-inline .checkbox {
+    margin-right: 10px;
+    padding-top: 7px;
+}
+
+#collection_portlet .tr_allocation_item td {
+    padding: 3px;
+}
+
+label.required:after {
+    content: '*';
+    color: #db2828;
+}
+.red.btn {
+    color: #FFFFFF;
+    background-color: #d84a38;
+}
+.btn-xs {
+    padding: 1px 5px;
+    border-radius: 3px;
+}
+/* letters css */
+.letter-options {
+    padding: 20px;
+    padding-top: 0px;
+    font-size: 14px;
+    color: #56739b;
+    text-align: center;
+    word-spacing: 20px;
+}
+
+.letter-options a {
+    font: 20px bolder;
+    font-family: "Courier New", Courier, monospace;
+}
+
+.portlet.light.entity {
+    height: 110px;
+    padding: 10px 15px;
+}
+
+.planning-ui .portlet-body {
+    max-height: 75vh !important;
+    overflow: auto;
+    margin-bottom: 0px;
+    padding-bottom: 0px;
+    display: inline-block;
+    /*min-height: 300px;*/
+    width: 100%;
+}
+
+.portlet-fullscreen .portlet-body {
+    height: 550px !important;
+}
+
+.portlet .portlet-title.portlet-hidden-title {
+    border-top: 1px solid #4B8DF8;
+    min-height: 0px;
+}
+
+.portlet .portlet-title.portlet-hidden-title .tools {
+    padding: 3px 14px 0 0;
+}
+
+.portlet-title.small {
+    min-height: 20px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border-bottom: 0 !important;
+}
+
+.portlet-title.small .tools {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.entity_node[data-active="inactive"] .portlet {
+    border: 1px solid #EA0B0B !important;
+}
+.page-content{
+    padding-top: 0px !important;
+    height: 100% !important;
+}
+
+.page-content-wrapper{
+    height: 100% !important;
+}
+
+.popover-content {
+    padding: 9px 20px;
+}
+.fa-green{
+    color: green !important;
+    text-decoration: none;
+}
+
+.ad-text-width{
+    width: 100px;
+}
+
+.img-thumbnail{
+    padding: 0 !important;
+}
+
+
+/* here you can put your own css to customize and override the theme */
+.ajax-loader-gif {
+    background: url("../image/ajax-document-loader.gif") no-repeat;
+    height: 12px;
+    line-height: 12px;
+    background-position: center;
+    width: 60px;
+    display: inline-block;
+}
+
+.ajax-loader-long {
+    background: url("../image/loader-horizontal.gif") no-repeat;
+    height: 12px;
+    line-height: 12px;
+    background-position: center;
+    width: 100%;
+    display: inline-block;
+}
+
+.form .form-actions {
+    clear: both;
+}
+
+.chosen-container {
+    width: 98% !important;
+}
+
+.chosen-container-single .chosen-search input[type="text"] {
+    padding: 4px 20px 4px 5px !important;
+    width: 100% !important;
+}
+
+.chosen-container input[type='text'] {
+    padding: 2px 4% !important;
+    width: 90% !important;
+    margin: 5px 2%;
+}
+
+.clear-both {
+    clear: both;
+}
+
+.clear-left {
+    clear: left;
+}
+
+.clear-right {
+    clear: right;
+}
+
+.text-left {
+    text-align: left;
+}
+
+/*END common css*/
+
+.multiselect-container > li > a > label.checkbox {
+    margin-left: 25px !important;
+    padding-left: 0px !important;
+}
+
+.multiselect-container .checkbox input[type="checkbox"] {
+    margin-left: -17px !important;
+}
+
+ul.multiselect-container.dropdown-menu {
+    max-width: 95% !important;
+}
+
+.page-loading-panel {
+    min-width: 135px;
+    padding: 7px 4px 7px 31px !important;
+    text-align: center;
+    font-size: 13px;
+    vertical-align: middle;
+    -webkit-box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+    background: url("../image/loading-spinner-grey.gif");
+    background-repeat: no-repeat;
+    background-position: 12px;
+    border: 1px solid #ddd;
+    background-color: #eee;
+    color: #333;
+}
+
+
+.date-picker[readonly="readonly"] {
+    cursor: pointer;
+}
+
+.cursor-text {
+    cursor: text !important;
+}
+
+.dropdown-menu li > button {
+    clear: both;
+    color: #555;
+    display: block;
+    font-weight: 300;
+    line-height: 18px;
+    padding-bottom: 8px;
+    padding-left: 14px;
+    padding-right: 14px;
+    padding-top: 8px;
+    text-decoration-color: -moz-use-text-color;
+    text-decoration-line: none;
+    text-decoration-style: solid;
+    white-space: nowrap;
+    border: 0px !important;
+    width: 100%;
+    background-color: #ffffff;
+    text-align: left;
+}
+
+
+.focus_style select:focus, .focus_style input:focus, .focus_style textarea:focus, .focus_style .btn:focus {
+    border: 1px solid #5897fb;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.dropdown-menu li > button:hover {
+    background-color: #f6f6f6;
+}
+
+.red_border {
+    border: 1px solid red !important;
+}
+
+.select2-selection__rendered {
+    font-size: 11px;
+}
+
+.form-inline .radio, .form-inline .checkbox {
+    margin-right: 10px;
+    padding-top: 7px;
+}
+
+#collection_portlet .tr_allocation_item td {
+    padding: 3px;
+}
+
+label.required:after {
+    content: '*';
+    color: #db2828;
+}
+.red.btn {
+    color: #FFFFFF;
+    background-color: #d84a38;
+}
+.btn-xs {
+    padding: 1px 5px;
+    border-radius: 3px;
+}
+/* letters css */
+.letter-options {
+    padding: 20px;
+    padding-top: 0px;
+    font-size: 14px;
+    color: #56739b;
+    text-align: center;
+    word-spacing: 20px;
+}
+
+.letter-options a {
+    font: 20px bolder;
+    font-family: "Courier New", Courier, monospace;
+}
+
+.portlet.light.entity {
+    height: 110px;
+    padding: 10px 15px;
+}
+
+.planning-ui .portlet-body {
+    max-height: 75vh !important;
+    overflow: auto;
+    margin-bottom: 0px;
+    padding-bottom: 0px;
+    display: inline-block;
+    /*min-height: 300px;*/
+    width: 100%;
+}
+
+.portlet-fullscreen .portlet-body {
+    height: 550px !important;
+}
+
+.portlet .portlet-title.portlet-hidden-title {
+    border-top: 1px solid #4B8DF8;
+    min-height: 0px;
+}
+
+.portlet .portlet-title.portlet-hidden-title .tools {
+    padding: 3px 14px 0 0;
+}
+
+.portlet-title.small {
+    min-height: 20px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border-bottom: 0 !important;
+}
+
+.portlet-title.small .tools {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.entity_node[data-active="inactive"] .portlet {
+    border: 1px solid #EA0B0B !important;
+}
+.page-content{
+    padding-top: 0px !important;
+    height: 100% !important;
+}
+
+.page-content-wrapper{
+    height: 100% !important;
+}
+
+.popover-content {
+    padding: 9px 20px;
+}
+
+.timeline-badge.orange {
+    background-color: #ee8328; }
+
+.red {
+    color: red !important;
+}

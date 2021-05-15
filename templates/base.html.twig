@@ -1,19 +1,172 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {# Run `composer require symfony/webpack-encore-bundle`
-           and uncomment the following Encore helpers to start using Symfony UX #}
-        {% block stylesheets %}
-            {#{{ encore_entry_link_tags('app') }}#}
-        {% endblock %}
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>
+        {% block title %}
 
-        {% block javascripts %}
-            {#{{ encore_entry_script_tags('app') }}#}
         {% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-    </body>
+    </title>
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('case-study-base') }}
+    {% endblock %}
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    {#    <!--[if lt IE 9]>#}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    {#    <![endif]-->#}
+</head>
+
+<body>
+{% set infoMessages = [] %}
+{% set successMessages = [] %}
+{% set errorMessages = [] %}
+{% if app.session and app.session.flashBag.has('flashInfo') %}
+    {% for flashMessage in app.session.flashbag.get('flashInfo') %}
+        {% set infoMessages = infoMessages|merge([flashMessage]) %}
+    {% endfor %}
+    <div id="infoMessages" data-id="{{ infoMessages|json_encode() }}"></div>
+{% endif %}
+
+{% if app.session and  app.session.flashBag.has('flashSuccess') %}
+    {% for flashMessage in app.session.flashbag.get('flashSuccess') %}
+        {% set successMessages = successMessages|merge([flashMessage]) %}
+    {% endfor %}
+    <div id="successMessages" data-id="{{ successMessages|json_encode() }}"></div>
+{% endif %}
+
+{% if app.session and app.session.flashBag.has('flashError') %}
+    {% for flashMessage in app.session.flashbag.get('flashError') %}
+        {% set errorMessages = errorMessages|merge([flashMessage]) %}
+    {% endfor %}
+    <div id="errorMessages" data-id="{{ errorMessages|json_encode() }}"></div>
+{% endif %}
+<!-- Main Wrapper -->
+<div class="main-wrapper">
+
+    <!-- Header -->
+    <div class="header">
+
+        <!-- Logo -->
+        <div class="header-left">
+            <a href="{{ path('home_page') }}" class="logo">
+                <img src="#" width="125" height="60" alt="Tech Mahindra" class="dark-logo" style="padding: 3px;">
+            </a>
+        </div>
+        <!-- /Logo -->
+
+        <a id="toggle_btn" href="javascript:void(0);">
+					<span class="bar-icon">
+						<span></span>
+						<span></span>
+						<span></span>
+					</span>
+        </a>
+
+        <a id="mobile_btn" class="mobile_btn" href="#sidebar"><i class="fa fa-bars"></i></a>
+
+        <!-- Header Menu -->
+        <ul class="nav user-menu">
+
+            {% if app.user %}
+                <!-- /Message Notifications -->
+                <li class="nav-item dropdown has-arrow main-drop">
+                    <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+							<span class="user-img"><img src="{{ asset('build/assets/public/assets/img/profiles/avatar-21.jpg')}}" alt="">
+							<span class="status online"></span></span>
+                        <span>
+                        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                            {{ app.user.firstName~" "~app.user.lastName}}
+                        {% endif %}
+                    </span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <div class="btn"><a class="dropdown-item" href="{{ path('my_profile') }}"><i class="fa fa-user"></i> My Profile</a></div>
+                        <div class="btn"><a class="dropdown-item" href="{{ path('change_password', {'id': app.user.id}) }}"><i class="fa fa-retweet"></i> Change Password</a></div>
+                        <div class="dropdown-divider"></div>
+                        <div class="btn"><a class="dropdown-item" href="{{ path('app_logout') }}"><i class="fa fa-power-off mr-1 ml-1"></i> Logout</a></div>
+                    </div>
+                </li>
+            {% endif %}
+        </ul>
+        <!-- /Header Menu -->
+
+        {% if app.user %}
+            <!-- Mobile Menu -->
+            <div class="dropdown mobile-user-menu">
+                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item" href="{{ path('my_profile') }}"><i class="fa fa-user"></i> My Profile</a>
+                    <a class="dropdown-item" href="{{ path('change_password', {'id': app.user.id}) }}"><i class="fa fa-retweet"></i> Change Password</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{{ path('app_logout') }}"><i class="fa fa-power-off mr-1 ml-1"></i> Logout</a>
+                </div>
+            </div>
+            <!-- /Mobile Menu -->
+        {% endif %}
+    </div>
+    <!-- /Header -->
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-inner slimscroll">
+            {% block leftMenu %}
+                {% include 'case_study_menu.html.twig' %}
+            {% endblock %}
+        </div>
+    </div>
+    <!-- /Sidebar -->
+
+    <!-- Page Wrapper -->
+    <div class="page-wrapper">
+
+        <!-- Page Content -->
+        <div class="content container-fluid">
+            <div class="loader">Loading...</div>
+            <div class="content-area" style="display: none">
+                <!-- Page Header -->
+                {% block breadcrumbarea %}
+                    <div class="page-header">
+                        <div class="row">
+                            <div class="col">
+                                {% block header %}
+
+                                {% endblock %}
+                                {% block breadcrumb %}
+
+                                {% endblock %}
+                            </div>
+                            <div class="col-auto float-right ml-auto">
+                                {% block pageToolbar %}
+
+                                {% endblock %}
+                            </div>
+                        </div>
+                    </div>
+                {% endblock %}
+                <!-- /Page Header -->
+
+                <div class="row">
+                    <div class="col-md-12">
+                        {% block body %}
+
+                        {% endblock %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Page Content -->
+
+    </div>
+    <!-- /Page Wrapper -->
+
+</div>
+<!-- /Main Wrapper -->
+{% block javascripts %}
+    {{ encore_entry_script_tags('case-study-base') }}
+{% endblock %}
+</body>
 </html>
