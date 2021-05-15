@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Office;
+use App\Entity\OfficeOccupancy;
 use App\Form\Type\OfficeType;
+use App\Service\OfficeEntryExistService;
 use App\Service\UserManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -98,4 +100,31 @@ class OfficeController extends AbstractController
         return $this->redirectToRoute('office_list');
     }
 
+    /**
+     * Creates a office entry.
+     *
+     * @Route("/{id}/entry", name="office_entry")
+     */
+    public function entryOffice(Office $office, OfficeEntryExistService $officeEntryExistService)
+    {
+        $officeEntryExistService->entryOffice($office);
+
+        return $this->render('office/entry_exist.html.twig', [
+            'office' => $office,
+        ]);
+    }
+
+    /**
+     * Creates a office entry.
+     *
+     * @Route("/{id}/exit", name="office_exit")
+     */
+    public function exitOffice(OfficeOccupancy $officeOccupancy, OfficeEntryExistService $officeEntryExistService)
+    {
+        $officeEntryExistService->exitOffice($officeOccupancy);
+
+        return $this->render('office/entry_exist.html.twig', [
+            'office' => $officeOccupancy->getOffice(),
+        ]);
+    }
 }

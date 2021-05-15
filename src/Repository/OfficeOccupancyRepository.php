@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Office;
 use App\Entity\OfficeOccupancy;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -19,22 +20,21 @@ class OfficeOccupancyRepository extends ServiceEntityRepository
         parent::__construct($registry, OfficeOccupancy::class);
     }
 
-    // /**
-    //  * @return OfficeOccupancy[] Returns an array of OfficeOccupancy objects
-    //  */
-    /*
-    public function findByExampleField($value)
+
+    public function findOfficeOccupancyStatus(OfficeOccupancy $officeOccupancy)
     {
-        return $this->createQueryBuilder('o')
-            ->andWhere('o.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('o.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
+        $qb = $this->createQueryBuilder('oc');
+        $qb->select("oc.status as status")
+            ->leftJoin('oc.office', 'o')
+            ->where('o.id = :officeId')
+            ->leftJoin('oc.user', 'u')
+            ->andWhere('u.id = :userId')
+            ->setParameter('officeId', $officeOccupancy->getOffice()->getId())
+            ->setParameter('userId', $officeOccupancy->getUser()->getId())
         ;
+
+        return $qb->getQuery()->getResult();
     }
-    */
 
     /*
     public function findOneBySomeField($value): ?OfficeOccupancy

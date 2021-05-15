@@ -49,6 +49,11 @@
                                         </a>
                                     {% endif %}
                                 </div>
+{#                                <a class="node-action dropdown-item common-modal" data-toggle="modal"  data-target="#office_entry" data-route="{{ path('office_entry', { 'id': office.id }) }}">#}
+{#                                    <i class="fa fa-lock m-r-5"></i>#}
+{#                                    Entry#}
+{#                                </a>#}
+                                <a class="dropdown-item" href="{{ path('office_entry', { 'id': office.id }) }}"><i class="fa fa-pencil m-r-5"></i> Entry</a>
                             </div>
                         </td>
                         </tr>

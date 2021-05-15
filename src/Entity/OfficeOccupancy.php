@@ -23,12 +23,12 @@ class OfficeOccupancy
     private $entryTime;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $exitTime;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="smallint")
      */
     private $status;
 
@@ -64,19 +64,19 @@ class OfficeOccupancy
         return $this->exitTime;
     }
 
-    public function setExitTime(\DateTimeInterface $exitTime): self
+    public function setExitTime(\DateTimeInterface $exitTime = null): self
     {
         $this->exitTime = $exitTime;
 
         return $this;
     }
 
-    public function getStatus(): ?bool
+    public function getStatus(): ?int
     {
         return $this->status;
     }
 
-    public function setStatus(bool $status): self
+    public function setStatus(int $status): self
     {
         $this->status = $status;
 

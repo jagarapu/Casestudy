@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Welcome to the Office
+{% endblock %}
+
+{% block header %}
+    <h3 class="page-title">Office</h3>
+{% endblock %}
+
+{% block body %}
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    {{ office.title }}
+                </div>
+
+                <div class="col-md-6">
+                    {{ office.address }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <a class="btn btn-dark" href="{{ path('office_entry', {'id': office.id}) }}">Entry to the office</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}
