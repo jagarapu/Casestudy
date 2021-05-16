@@ -8,6 +8,7 @@ use App\Entity\SearchFilter;
 use App\Entity\User;
 use App\Form\Type\OfficeSearchType;
 use App\Form\Type\OfficeType;
+use App\Service\OfficeCapacityCheck;
 use App\Service\OfficeEntryExistService;
 use App\Service\UserManager;
 use Knp\Component\Pager\PaginatorInterface;
@@ -108,9 +109,16 @@ class OfficeController extends AbstractController
      *
      * @Route("/{id}/entry", name="office_entry")
      */
-    public function entryOffice(Office $office, OfficeEntryExistService $officeEntryExistService)
+    public function entryOffice(Office $office, OfficeEntryExistService $officeEntryExistService, OfficeCapacityCheck $officeCapacityCheck)
     {
+        $user = $this->getUser();
+        $em = $this->getDoctrine()->getManager();
+        $flag = $officeEntryExistService->checkAlreadyEnterToOffice($user);
+
         $officeOccupancy = $officeEntryExistService->entryOffice($office);
+        $officeOccupancyStatusByUser = $em->getRepository(OfficeOccupancy::class)
+            ->findOfficeOccupancyStatus($user, $office);
+        $checkOfficeCapacity = $officeCapacityCheck->checkOfficeCapacity($office);
 
         return $this->render(
             'office/current_office.html.twig',
@@ -118,6 +126,9 @@ class OfficeController extends AbstractController
                 'user' => $officeOccupancy->getUser(),
                 'office' => $officeOccupancy->getOffice(),
                 'officeOccupancy' => $officeOccupancy,
+                'officeOccupancyStatus' => $officeOccupancyStatusByUser,
+                'checkOfficeCapacity' => $checkOfficeCapacity,
+                'flag' => $flag,
             ]
         );
     }
@@ -137,7 +148,7 @@ class OfficeController extends AbstractController
     /**
      * @Route("/view-current-office", name="view_current_office")
      */
-    public function viewCurrentOffice()
+    public function viewCurrentOffice(OfficeEntryExistService $officeEntryExistService, OfficeCapacityCheck $officeCapacityCheck)
     {
         $user = $this->getUser();
         $em = $this->getDoctrine()->getManager();
@@ -148,13 +159,16 @@ class OfficeController extends AbstractController
             $office = $em->getRepository(Office::class)->find($officeId);
             $officeOccupancy = $em->getRepository(OfficeOccupancy::class)->findOneBy(['user' => $user, 'office' => $office]);
         }
-
+        $flag = $officeEntryExistService->checkAlreadyEnterToOffice($user);
+        $checkOfficeCapacity = $officeCapacityCheck->checkOfficeCapacity($office);
         return $this->render(
             'office/current_office.html.twig',
             [
                 'user' => $user,
                 'office' => $office,
                 'officeOccupancy' => $officeOccupancy,
+                'checkOfficeCapacity' => $checkOfficeCapacity,
+                'flag' => $flag,
             ]
         );
     }
@@ -162,19 +176,25 @@ class OfficeController extends AbstractController
     /**
      * @Route("/{id}/office-view", name="office_view")
      */
-    public function viewOffice(Office $office)
+    public function viewOffice(Office $office, OfficeEntryExistService $officeEntryExistService, OfficeCapacityCheck $officeCapacityCheck)
     {
         $user = $this->getUser();
         $em = $this->getDoctrine()->getManager();
         $officeOccupancyStatusByUser = $em->getRepository(OfficeOccupancy::class)
             ->findOfficeOccupancyStatus($user, $office);
-
+        $officeOccupancy = $em->getRepository(OfficeOccupancy::class)->findOneBy(['user' => $user, 'office' => $office]);
+        $flag = $officeEntryExistService->checkAlreadyEnterToOffice($user);
+        $checkOfficeCapacity = $officeCapacityCheck->checkOfficeCapacity($office);
+        
         return $this->render(
             'office/current_office.html.twig',
             [
                 'user' => $user,
                 'office' => $office,
-                'officeOccupancyStatus' => ($officeOccupancyStatusByUser ? $officeOccupancyStatusByUser[0] : $officeOccupancyStatusByUser)
+                'officeOccupancyStatus' => $officeOccupancyStatusByUser,
+                'officeOccupancy' => $officeOccupancy,
+                'checkOfficeCapacity' => $checkOfficeCapacity,
+                'flag' => $flag,
             ]
         );
     }

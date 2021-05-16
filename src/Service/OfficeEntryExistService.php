@@ -40,7 +40,7 @@ class OfficeEntryExistService
     {
         $user = $this->tokenStorage->getToken()->getUser();
         $officeOccupancy = $this->entityManager->getRepository(OfficeOccupancy::class)
-            ->findBy(['user' => $user, 'office' => $office]);
+            ->findBy(['user' => $user]);
 
         if ($officeOccupancy) {
             $officeOccupancy = $officeOccupancy[0];
@@ -68,5 +68,15 @@ class OfficeEntryExistService
         $officeOccupancy->setStatus(2);
         $this->entityManager->persist($officeOccupancy);
         $this->entityManager->flush();
+    }
+
+    public function checkAlreadyEnterToOffice(User $user)
+    {
+        $officeOccupancy = $this->entityManager->getRepository(OfficeOccupancy::class)
+            ->getUserAlreadyOccupiedOfficeStatus($user);
+        if ($officeOccupancy) {
+            return false;
+        }
+        return true;
     }
 }

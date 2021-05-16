@@ -29,10 +29,8 @@ class OfficeOccupancyRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('oc');
         $qb->select("oc.status as status")
-            ->leftJoin('oc.office', 'o')
-            ->where('o.id = :officeId')
-            ->leftJoin('oc.user', 'u')
-            ->andWhere('u.id = :userId')
+            ->where('oc.office = :officeId')
+            ->andWhere('oc.user = :userId')
             ->setParameter('officeId', $office->getId())
             ->setParameter('userId', $user->getId())
         ;
@@ -70,6 +68,19 @@ class OfficeOccupancyRepository extends ServiceEntityRepository
             ->leftJoin('oc.user', 'u')
             ->where('u.id = :userId')
             ->setParameter('userId', $user->getId());
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function getUserAlreadyOccupiedOfficeStatus($user)
+    {
+        $qb = $this->createQueryBuilder('oc');
+        $qb->select("oc")
+            ->where('oc.user = :userId')
+            ->andWhere('oc.status = :status')
+            ->setParameter('userId', $user->getId())
+            ->setParameter('status', 1)
+        ;
 
         return $qb->getQuery()->getResult();
     }
