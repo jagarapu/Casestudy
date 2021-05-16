@@ -13,12 +13,20 @@
             </div>
             <div class="dropdown profile-action">
                 {% if ADMIN_USER %}
-                    <a class="dropdown-item" href="{{ path('office_edit', { 'id': office.id }) }}" data-toggle="" data-target=""><i class="fa fa-pencil m-r-5"></i> </a>
-                    <a class="dropdown-item delete-modal" href="javascript:void(0);" data-route="{{ path('office_delete', {'id': office.id }) }}" data-toggle="modal" data-target="#delete_office"><i class="fa fa-trash-o m-r-5"></i> </a>
+                    <a class="dropdown-item" href="{{ path('office_edit', { 'id': office.id }) }}" data-toggle="" data-target="">
+                        <i class="fa fa-pencil m-r-5"></i> </a>
+                    <a class="dropdown-item delete-modal" href="javascript:void(0);" data-route="{{ path('office_delete', {'id': office.id }) }}" data-toggle="modal" data-target="#delete_office">
+                        <i class="fa fa-trash-o m-r-5"></i>
+                    </a>
                 {% endif %}
             </div>
-            <h5 class="user-name m-t-10 mb-0 text-ellipsis"><a href="javascript:void(0);"><span class="text-secondary">#{% if officeWiseOccupancy|length and officeWiseOccupancy[office.title] is defined %}{{ officeWiseOccupancy[office.title] }} {% else %} 0 {% endif %} / {{ office.officeCapacity }}</span> {{ office.title }} </a></h5>
-            <h6 class="company-name m-t-10 mb-0 text-ellipsis"><a href="javascript:void(0);"><i class="fa fa-building" aria-hidden="true" style="color: #ff9b44"></i>&nbsp;{{ office.address }}</a></h6>
+            <h5 class="user-name m-t-10 mb-0 text-ellipsis"><a href="javascript:void(0);">
+                    <span class="text-secondary">#{% if officeWiseOccupancy|length and officeWiseOccupancy[office.title] is defined %}
+                        {{ officeWiseOccupancy[office.title] }} {% else %} 0 {% endif %} / {{ office.officeCapacity }}
+                    </span> {{ office.title }} </a></h5>
+            <h6 class="company-name m-t-10 mb-0 text-ellipsis">
+                <a href="javascript:void(0);"><i class="fa fa-building" aria-hidden="true" style="color: #ff9b44"></i>&nbsp;{{ office.address }}</a>
+            </h6>
             <div class="small text-muted">{{ office.phoneNumber }}</div>
         </div>
     </div>

@@ -8,6 +8,18 @@
     <h3 class="page-title">Employee list</h3>
 {% endblock %}
 
+{% block pageToolbar %}
+    {% set ADMIN_USER =  (app.user and is_granted('ROLE_ADMIN')) %}
+    {% if ADMIN_USER %}
+        <div class="navbar">
+            <a href="{{ path('user_new') }}" class="dropdown-item">
+                <i class="fa fa-plus fa-white"></i>
+                Add employee
+            </a>
+        </div>
+    {% endif %}
+{% endblock %}
+
 {% block body %}
     <div class="table-responsive">
                 <table class="table table-striped custom-table mb-0 datatable">
