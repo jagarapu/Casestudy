@@ -55,10 +55,10 @@ class OfficeOccupancyRepository extends ServiceEntityRepository
         return $result;
     }
 
-    public function getOfficeId($user)
+    public function getOffice($user)
     {
         $qb = $this->createQueryBuilder('oc')
-            ->where('co.id = :userId')
+            ->where('oc.id = :userId')
             ->setParameter('userId', $user->getId());
 
         return $qb->getQuery()->getResult();

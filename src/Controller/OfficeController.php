@@ -40,7 +40,7 @@ class OfficeController extends AbstractController
             $em->persist($office);
             $em->flush();
 
-            return $this->redirectToRoute('home_page');
+            return $this->redirectToRoute('office_list');
         }
 
         return $this->render('office/add_edit.html.twig', [
@@ -154,7 +154,23 @@ class OfficeController extends AbstractController
     public function viewCurrentOffice(User $user)
     {
         $em = $this->getDoctrine()->getManager();
-        $office = $em->getRepository(OfficeOccupancy::class)->getOfficeId($user);
+        $office = $em->getRepository(OfficeOccupancy::class)->getOffice($user);
+
+        return $this->render(
+            'office/current_office.html.twig',
+            [
+                'user' => $user,
+                'office' => $office,
+            ]
+        );
+    }
+
+    /**
+     * @Route("/{id}/office-view", name="office_view")
+     */
+    public function viewOffice(Office $office)
+    {
+        $user = $this->getUser();
 
         return $this->render(
             'office/current_office.html.twig',
@@ -168,8 +184,8 @@ class OfficeController extends AbstractController
     /**
      * Deletes a office entity.
      *
-     * @Route("/admin/office/{id}/delete", name="office_delete")
-     * @Security("is_granted('RROLE_ADMIN')")
+     * @Route("/office/{id}/delete", name="office_delete")
+     * @Security("is_granted('ROLE_ADMIN')")
      */
     public function delete(Office $office)
     {
@@ -178,7 +194,7 @@ class OfficeController extends AbstractController
         $em->flush();
         $this->get('session')->getFlashBag()->set(
             'flashSuccess',
-            $office->getName() . ' office deleted successfully'
+            $office->getTitle() . ' office deleted successfully'
         );
 
         return $this->redirectToRoute('office_list');

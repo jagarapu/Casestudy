@@ -11,13 +11,15 @@
                 <span class="hide-menu">Offices</span>
             </a>
         </li>
-        <li>
-            <a class=" {% if (requestRoute in [ 'view_current_office']) %}active {% endif %}"
-               href="{{ path('view_current_office', {'id': app.user.id}) }}">
-                <i class="la la-sitemap m-r-5"></i>
-                <span class="hide-menu">Current Office</span>
-            </a>
-        </li>
+        {% if EMPLOYEE_USER %}
+            <li>
+                <a class=" {% if (requestRoute in [ 'view_current_office']) %}active {% endif %}"
+                   href="{{ path('view_current_office', {'id': app.user.id}) }}">
+                    <i class="la la-sitemap m-r-5"></i>
+                    <span class="hide-menu">Current Office</span>
+                </a>
+            </li>
+        {% endif %}
         {% if ADMIN_USER %}
             <li>
                 <a class=" {% if (requestRoute in [ 'user_index']) %}active {% endif %}"

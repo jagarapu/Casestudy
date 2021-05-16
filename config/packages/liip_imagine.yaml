@@ -1,0 +1,18 @@
+# See dos how to configure the bundle: https://symfony.com/doc/current/bundles/LiipImagineBundle/basic-usage.html
+liip_imagine:
+    # valid drivers options include "gd" or "gmagick" or "imagick"
+    driver: "gd"
+    resolvers:
+        default:
+            web_path: ~
+    filter_sets:
+        cache: ~
+        # the name of the "filter set"
+        office_logo:
+            filters:
+                resize:
+                    size: [100,100]
+        favicon:
+            filters:
+                downscale:
+                    max: [18,18]

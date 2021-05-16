@@ -5,6 +5,7 @@ namespace App\Form\Type;
 use App\Entity\Office;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -56,6 +57,9 @@ class OfficeType extends AbstractType
                     'attr' => ['class' => 'form-control'],
                 ]
             )
+            ->add('logo',FileType::class, [
+                'label' => 'Select Logo','data_class' => null, 'required'   => false
+            ])
         ;
     }
 

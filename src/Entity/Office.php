@@ -302,7 +302,7 @@ class Office
         return $this->logo;
     }
 
-    public function setLogo(?string $logo): self
+    public function setLogo($logo): self
     {
         if ($logo) {
 
