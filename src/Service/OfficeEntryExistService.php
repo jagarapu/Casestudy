@@ -2,7 +2,9 @@
 
 namespace App\Service;
 
+use App\Entity\Office;
 use App\Entity\OfficeOccupancy;
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
@@ -34,10 +36,17 @@ class OfficeEntryExistService
      * @param $office
      * @throws \Exception
      */
-    public function entryOffice($office)
+    public function entryOffice(Office $office)
     {
-        $officeOccupancy = new OfficeOccupancy();
         $user = $this->tokenStorage->getToken()->getUser();
+        $officeOccupancy = $this->entityManager->getRepository(OfficeOccupancy::class)
+            ->findBy(['user' => $user, 'office' => $office]);
+
+        if ($officeOccupancy) {
+            $officeOccupancy = $officeOccupancy[0];
+        } else {
+            $officeOccupancy = new OfficeOccupancy();
+        }
         $officeOccupancy->setUser($user);
         $officeOccupancy->setOffice($office);
         $officeOccupancy->setEntryTime(new \DateTime());
@@ -45,6 +54,8 @@ class OfficeEntryExistService
         $officeOccupancy->setStatus(1);
         $this->entityManager->persist($officeOccupancy);
         $this->entityManager->flush();
+
+        return $officeOccupancy;
     }
 
     /**

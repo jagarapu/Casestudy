@@ -136,6 +136,12 @@ class Office
      */
     private $logo;
 
+    /**
+     * @Assert\NotBlank(message="Office Capacity cannot be blank",groups={"office"})
+     * @ORM\Column(type="integer")
+     */
+    private $officeCapacity;
+
     public function __construct()
     {
         $this->officeOccupancies = new ArrayCollection();
@@ -359,6 +365,18 @@ class Office
         } else {
             return getcwd().'/'.Office::$logoPath . '/' . $this->logo;
         }
+    }
+
+    public function getOfficeCapacity(): ?int
+    {
+        return $this->officeCapacity;
+    }
+
+    public function setOfficeCapacity(int $officeCapacity): self
+    {
+        $this->officeCapacity = $officeCapacity;
+
+        return $this;
     }
 
 }

@@ -18,7 +18,6 @@ use Symfony\Component\Security\Core\Security;
 /**
  * Class UserController
  * @package App\Controller
- * @Route("techm/user")
  */
 class UserController extends AbstractController
 {
@@ -33,7 +32,7 @@ class UserController extends AbstractController
     /**
      * Lists all user entities.
      *
-     * @Route("/list", name="user_index")
+     * @Route("/user/list", name="user_index")
      */
     public function index(UserManager $userManager)
     {
@@ -142,6 +141,15 @@ class UserController extends AbstractController
             $em->persist($user);
             $em->flush();
             $mailManager->forgotPassword($user);
+            $this->get('session')->getFlashBag()->set(
+                'flashSuccess',
+                'A new password has been sent to ' . $email
+            );
+        } else {
+            $this->get('session')->getFlashBag()->set(
+                'flashError',
+                'This email is not registered with SpadeCRM'
+            );
         }
 
         return $this->redirectToRoute('app_login');
@@ -158,8 +166,9 @@ class UserController extends AbstractController
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $userManager->manageUpdatedPassword($user, false);
-                $mailManager->changePasswordEmail($user);
-                return $this->redirectToRoute('home_page');
+//                $mailManager->changePasswordEmail($user);
+                $this->get('session')->getFlashBag()->add('flashSuccess', 'Password Changed Successfully!');
+                return $this->redirectToRoute('office_list');
             }
         }
 
@@ -167,6 +176,7 @@ class UserController extends AbstractController
             'user/password_change.html.twig',
             [
                 'form' => $form->createView(),
+                'user' => $user,
             ]
         );
     }

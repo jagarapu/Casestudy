@@ -32,6 +32,12 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
+    password_constraint:
+        class: App\Validator\User\PasswordConstraintValidator
+        arguments: ["@doctrine.orm.default_entity_manager", "@security.encoder_factory"]
+        tags:
+            - { name: "validator.constraint_validator", alias: 'password_constraint' }
+
     office_search_form:
         class: App\Form\Type\OfficeSearchType
         arguments: ['@doctrine.orm.entity_manager']

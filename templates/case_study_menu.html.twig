@@ -14,7 +14,7 @@
         {% if EMPLOYEE_USER %}
             <li>
                 <a class=" {% if (requestRoute in [ 'view_current_office']) %}active {% endif %}"
-                   href="{{ path('view_current_office', {'id': app.user.id}) }}">
+                   href="{{ path('view_current_office') }}">
                     <i class="la la-sitemap m-r-5"></i>
                     <span class="hide-menu">Current Office</span>
                 </a>

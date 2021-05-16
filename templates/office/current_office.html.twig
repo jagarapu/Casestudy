@@ -34,9 +34,18 @@
                                             <h5 class="company-role m-t-0 mb-0">Created By</h5>
                                             <small class="text-muted">{{ office.createdBy }}</small>
                                             <div class="staff-id">Employee ID : {{ user.employeeId }}</div>
-                                            <div class="staff-msg"><a
-                                                        href="{{ path('office_exit', {'id': office.id}) }}"
-                                                        class="btn btn-custom">Exit</a></div>
+                                            {% if officeOccupancyStatus is defined and (officeOccupancyStatus|length == 0 or officeOccupancyStatus == 2) %}
+                                                <div class="staff-msg">
+                                                    <a data-toggle="modal"  data-target="#entry_office" data-route="{{ path('office_entry', {'id': office.id}) }}"
+                                                        class="btn btn-custom common-modal">Entry</a>
+                                                </div>
+
+                                            {% elseif officeOccupancy is defined %}
+                                                <div class="staff-msg">
+                                                    <a data-toggle="modal"  data-target="#exit_office" data-route="{{ path('office_exit', {'id': officeOccupancy.id}) }}"
+                                                       class="btn btn-custom common-modal">Exit</a>
+                                                </div>
+                                            {% endif %}
                                         </div>
                                     </div>
                                     <div class="col-md-7">
@@ -69,8 +78,11 @@
                     </div>
                     {% else %}
                     You can enter any office
+                    &nbsp;<a href="{{ path('office_list') }}">Office list</a>
                 {% endif %}
             </div>
         </div>
     </div>
+    {% include 'office/office_entry_modal.html.twig' %}
+    {% include 'office/office_exit_modal.html.twig' %}
 {% endblock %}

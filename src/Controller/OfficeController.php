@@ -104,36 +104,22 @@ class OfficeController extends AbstractController
     }
 
     /**
-     * Activates/Deactiavtes a office entity.
-     *
-     * @Route("/{id}/toggle/activation", name="office_toggle_activation")
-     */
-    public function toggleActivation(Request $request, Office $office)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $office->setIsEnabled(!($office->getIsEnabled()));
-        $em->flush();
-        if($office->getIsEnabled()){
-            $message = $office->getUsername() . ' user activated successfully';
-        } else {
-            $message = $office->getUsername() . ' user deactivated successfully';
-        }
-
-        return $this->redirectToRoute('office_list');
-    }
-
-    /**
      * Creates a office entry.
      *
      * @Route("/{id}/entry", name="office_entry")
      */
     public function entryOffice(Office $office, OfficeEntryExistService $officeEntryExistService)
     {
-        $officeEntryExistService->entryOffice($office);
+        $officeOccupancy = $officeEntryExistService->entryOffice($office);
 
-        return $this->render('office/entry_exist.html.twig', [
-            'office' => $office,
-        ]);
+        return $this->render(
+            'office/current_office.html.twig',
+            [
+                'user' => $officeOccupancy->getUser(),
+                'office' => $officeOccupancy->getOffice(),
+                'officeOccupancy' => $officeOccupancy,
+            ]
+        );
     }
 
     /**
@@ -149,18 +135,26 @@ class OfficeController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/view-current-office", name="view_current_office")
+     * @Route("/view-current-office", name="view_current_office")
      */
-    public function viewCurrentOffice(User $user)
+    public function viewCurrentOffice()
     {
+        $user = $this->getUser();
         $em = $this->getDoctrine()->getManager();
-        $office = $em->getRepository(OfficeOccupancy::class)->getOffice($user);
+        $officeId = $em->getRepository(OfficeOccupancy::class)->getOffice($user);
+        $office = null;
+        $officeOccupancy = null;
+        if ($officeId) {
+            $office = $em->getRepository(Office::class)->find($officeId);
+            $officeOccupancy = $em->getRepository(OfficeOccupancy::class)->findOneBy(['user' => $user, 'office' => $office]);
+        }
 
         return $this->render(
             'office/current_office.html.twig',
             [
                 'user' => $user,
                 'office' => $office,
+                'officeOccupancy' => $officeOccupancy,
             ]
         );
     }
@@ -171,12 +165,16 @@ class OfficeController extends AbstractController
     public function viewOffice(Office $office)
     {
         $user = $this->getUser();
+        $em = $this->getDoctrine()->getManager();
+        $officeOccupancyStatusByUser = $em->getRepository(OfficeOccupancy::class)
+            ->findOfficeOccupancyStatus($user, $office);
 
         return $this->render(
             'office/current_office.html.twig',
             [
                 'user' => $user,
                 'office' => $office,
+                'officeOccupancyStatus' => ($officeOccupancyStatusByUser ? $officeOccupancyStatusByUser[0] : $officeOccupancyStatusByUser)
             ]
         );
     }

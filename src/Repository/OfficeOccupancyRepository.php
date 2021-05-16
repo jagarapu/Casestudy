@@ -2,7 +2,9 @@
 
 namespace App\Repository;
 
+use App\Entity\Office;
 use App\Entity\OfficeOccupancy;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -23,7 +25,7 @@ class OfficeOccupancyRepository extends ServiceEntityRepository
      * @param OfficeOccupancy $officeOccupancy
      * @return mixed
      */
-    public function findOfficeOccupancyStatus(OfficeOccupancy $officeOccupancy)
+    public function findOfficeOccupancyStatus(User $user, Office $office)
     {
         $qb = $this->createQueryBuilder('oc');
         $qb->select("oc.status as status")
@@ -31,11 +33,14 @@ class OfficeOccupancyRepository extends ServiceEntityRepository
             ->where('o.id = :officeId')
             ->leftJoin('oc.user', 'u')
             ->andWhere('u.id = :userId')
-            ->setParameter('officeId', $officeOccupancy->getOffice()->getId())
-            ->setParameter('userId', $officeOccupancy->getUser()->getId())
+            ->setParameter('officeId', $office->getId())
+            ->setParameter('userId', $user->getId())
         ;
 
-        return $qb->getQuery()->getResult();
+        $result =  array_column($qb->getQuery()
+            ->getResult(), 'status');
+
+        return $result;
     }
 
     /**
@@ -47,6 +52,8 @@ class OfficeOccupancyRepository extends ServiceEntityRepository
             ->leftJoin('oc.office', 'o')
             ->select('o.title as office_title')
             ->addSelect('count(oc.user) as users_count')
+            ->where('oc.status = :status')
+            ->setParameter('status', 1)
             ->groupBy('oc.office');
 
         $result =  array_column($qb->getQuery()
@@ -55,10 +62,13 @@ class OfficeOccupancyRepository extends ServiceEntityRepository
         return $result;
     }
 
-    public function getOffice($user)
+    public function getOffice(User $user)
     {
         $qb = $this->createQueryBuilder('oc')
-            ->where('oc.id = :userId')
+            ->select('o.id')
+            ->leftJoin('oc.office', 'o')
+            ->leftJoin('oc.user', 'u')
+            ->where('u.id = :userId')
             ->setParameter('userId', $user->getId());
 
         return $qb->getQuery()->getResult();

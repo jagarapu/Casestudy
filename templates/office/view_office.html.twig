@@ -9,12 +9,15 @@
 {% endblock %}
 
 {% block pageToolbar %}
+    {% set ADMIN_USER =  (app.user and is_granted('ROLE_ADMIN')) %}
+    {% if ADMIN_USER %}
     <div class="navbar">
         <a href="{{ path('office_new') }}" class="dropdown-item">
             <i class="fa fa-plus fa-white"></i>
             Add office
         </a>
     </div>
+    {% endif %}
 {% endblock %}
 
 {% block stylesheets %}
