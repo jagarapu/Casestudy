@@ -8,15 +8,6 @@
     <h3 class="page-title">Edit User</h3>
 {% endblock %}
 
-{% block breadcrumb %}
-
-    {% set breadcrumbArray = {'Home': path('contact_index'),'Users':path('user_index'),'User edit':path('user_edit',{'id' : user.id}) } %}
-    {% set entity = user %}
-    {% set breadcrumbs = get_breadcrumbs(entity, breadcrumbArray) %}
-    {% include 'master/tree/bread_crumb.html.twig' with {'links': breadcrumbs } %}
-
-{% endblock %}
-
 {% block body %}
 
     <div class="card">
@@ -25,42 +16,34 @@
             {{ form_start(edit_form, {attr: {novalidate: 'novalidate'}}) }}
 
             <div class="row">
-                <div class="col-md-6">
-                    {{ form_row(edit_form.username, { 'attr':{'readonly':'true'}}) }}
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    {{ form_row(edit_form.username) }}
                 </div>
 
-                <div class="col-md-6">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                     {{ form_row(edit_form.email) }}
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                     {{ form_row(edit_form.firstName) }}
                 </div>
 
-                <div class="col-md-6">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                     {{ form_row(edit_form.lastName) }}
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-md-6">
-                    {{ form_row(edit_form.organization) }}
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    {{ form_row(edit_form.employeeId) }}
                 </div>
-                <div class="col-md-6">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                     {{ form_row(edit_form.roles) }}
                 </div>
+            </div>
 
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    {{ form_row(edit_form.departments) }}
-                </div>
-                <div class="col-md-6">
-                    {{ form_row(edit_form.manager) }}
-                </div>
-            </div>
             <div class="row">
                 <div class="col">
                     <input class="btn btn-primary" type="submit" value="Save Changes"/>
@@ -77,5 +60,5 @@
 
 {% block javascripts %}
     {{ parent() }}
-    {{ encore_entry_script_tags('user-edit') }}
+{#    {{ encore_entry_script_tags('user-edit') }}#}
 {% endblock %}

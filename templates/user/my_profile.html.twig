@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block header %}
-    <h3 class="page-title">{{ user.firstName }} {{ user.lastName }} Profile</h3>
+    <h3 class="page-title">{{ user.firstName }} {{ user.lastName }} profile</h3>
 {% endblock %}
 
 {% block body %}
@@ -30,7 +30,6 @@
                             <h6> {{ user.firstName }} {{ user.lastName }} </h6>
                             <h4 class="text-muted p-t-15 db">Email address</h4>
                             <h6> {{ user.email }} </h6>
-                            <h4 class="text-muted p-t-15 db">Department</h4>
                             <h4 class="text-muted p-t-15 db">CreatedAt</h4>
                             <h6> {{ user.createdAt|date('d-M-Y H:i:s') }} </h6>
                             <h4 class="text-muted p-t-15 db">Role Details</h4>

@@ -19,32 +19,34 @@ class OfficeRepository extends ServiceEntityRepository
         parent::__construct($registry, Office::class);
     }
 
-    // /**
-    //  * @return Office[] Returns an array of Office objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @return array
+     */
+    public function findAllCities()
     {
-        return $this->createQueryBuilder('o')
-            ->andWhere('o.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('o.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $queryBuilder = $this->createQueryBuilder('o')
+            ->select('DISTINCT(o.city) as city')
+            ->where('o.isEnabled = 1');
 
-    /*
-    public function findOneBySomeField($value): ?Office
-    {
-        return $this->createQueryBuilder('o')
-            ->andWhere('o.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $result = $queryBuilder->getQuery()->getResult();
+
+        return array_column($result, 'city');
     }
-    */
+
+    /**
+     * @param $officeSearch
+     * @return mixed
+     */
+    public function officeSearchByCity($officeSearch)
+    {
+        $queryBuilder = $this->createQueryBuilder('o');
+        if($officeSearch->getCity()){
+            $queryBuilder->andWhere('o.city = :city')
+                ->setParameter('city', $officeSearch->getCity());
+        }
+
+        $result = $queryBuilder->getQuery()->getResult();
+
+        return $result;
+    }
 }

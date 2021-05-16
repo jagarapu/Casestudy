@@ -10,9 +10,15 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * @ORM\Table(name="user")
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @UniqueEntity(fields="username",message="Username already exists in database",groups={"userregistration"})
+ * @UniqueEntity(fields="email",message = "Email already exists in database",groups={"userregistration"})
+ *
  */
 class User implements UserInterface
 {
@@ -24,6 +30,35 @@ class User implements UserInterface
     const ROLE_ADMIN = 'ROLE_SUPER_ADMIN';
     const ROLE_EMPLOYEE = 'ROLE_EMPLOYEE';
 
+    const SALUTATION_MR = 'Mister';
+    const SALUTATION_MS = 'Miss';
+    const SALUTATION_MRS = 'Mrs.';
+    const SALUTATION_DR = 'Doctor';
+
+    const GENDER_MALE = 'm';
+    const GENDER_FEMALE = 'f';
+    const GENDER_NON_BINARY = 'n';
+    const GENDER_UNKNOWN = 'u';
+
+    public static $getSalutation = [
+        'Mister' => self::SALUTATION_MR,
+        'Miss' => self::SALUTATION_MS,
+        'Mrs.' => self::SALUTATION_MRS,
+        'Doctor' => self::SALUTATION_DR
+    ];
+
+    public static $getGender = [
+        'Male' => self::GENDER_MALE,
+        'Female' => self::GENDER_FEMALE,
+        'Non-Binary' => self::GENDER_NON_BINARY,
+        'Unknown' => self::GENDER_UNKNOWN,
+    ];
+
+    public static $getRoles = [
+        'Admin' => self::ROLE_ADMIN,
+        'Employee' => self::ROLE_EMPLOYEE,
+    ];
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -32,6 +67,12 @@ class User implements UserInterface
     private $id;
 
     /**
+     * @Assert\NotBlank( message = "Username cannot be blank", groups={"userregistration"})
+     * @Assert\Regex(
+     *      pattern="/[^a-zA-Z0-9-_]/",
+     *      match = false,
+     *      message = "Username allows only a-z,A-Z,0-9,_", groups={"userregistration"})
+     * @Assert\Length(min=4,max=30,minMessage="Username should be minimum {{ limit }} characters",maxMessage="Username cannot exceeds {{ limit }} characters",groups={"userregistration"})
      * @ORM\Column(type="string", length=180, unique=true)
      */
     private $username;
@@ -48,6 +89,13 @@ class User implements UserInterface
     private $password;
 
     /**
+     * @Assert\NotBlank(message="Firstname cannot be blank", groups={"userregistration"})
+     * @Assert\Length(min=2,max=100,minMessage="Firstname should be minimum {{ limit }} characters", maxMessage="Your Firstname cannot be longer than {{ limit }} characters",groups={"userregistration"}
+     * )
+     * @Assert\Regex(
+     *      pattern="/[^A-Za-zà-ÿÀ-Ÿ .\']/i",
+     *      match=false,
+     *      message="Firstname allows only a-z,A-Z and few special characters (. ')",groups={"userregistration"})
      * @ORM\Column(type="string", length=255)
      */
     private $firstName;
@@ -58,6 +106,9 @@ class User implements UserInterface
     private $lastName;
 
     /**
+     * @Assert\Email(message = "Email not valid", groups={"userregistration"})
+     * @Assert\NotBlank(message = "Email cannot be blank", groups={"userregistration"})
+     * @Assert\Length(max=255,maxMessage="Email cannot exceeds 255 characters")
      * @ORM\Column(type="string", length=255)
      */
     private $email;
@@ -95,6 +146,11 @@ class User implements UserInterface
     private $salt;
 
     private $rawPassword;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $employeeId;
 
     public function __construct()
     {
@@ -323,6 +379,18 @@ class User implements UserInterface
     public function getRawPassword()
     {
         return $this->rawPassword;
+    }
+
+    public function getEmployeeId(): ?string
+    {
+        return $this->employeeId;
+    }
+
+    public function setEmployeeId(?string $employeeId): self
+    {
+        $this->employeeId = $employeeId;
+
+        return $this;
     }
 
 }

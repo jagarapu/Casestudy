@@ -1,64 +1,21 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}
-    Offices
-{% endblock %}
-
-{% block header %}
-    <h3 class="page-title">Offices list</h3>
-{% endblock %}
-
-{% block body %}
-    <div class="table-responsive">
-                <table class="table table-striped custom-table mb-0 datatable">
-                    <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Address</th>
-                        <th>Postal Code</th>
-                        <th>Phone Number</th>
-                        <th>Is enabled</th>
-                        <th>Created at</th>
-                        <th>Created by</th>
-                        <th class="text-right">Actions</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for office in offices %}
-                        <tr {% if not office.isEnabled %}class="table-danger"{% endif %}>
-                        <td>{{ office.title }}</td>
-                        <td>{{ office.address }}</td>
-                        <td>{{ office.phoneNumber }}</td>
-                        <td>{% if office.isEnabled %}Yes{% else %}No{% endif %}</td>
-                        <td>{% if office.createdAt %}{{ office.createdAt|date('d-M-Y') }}{% endif %}</td>
-                        <td>{{ office.createdBy }}</td>
-                        <td class="text-right">
-                            <div class="dropdown dropdown-action">
-                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="{{ path('office_edit', { 'id': office.id }) }}"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                    {% if office.isEnabled %}
-                                        <a class="node-action dropdown-item common-modal" data-toggle="modal"  data-target="#deactivate_record" data-route="{{ path('office_toggle_activation', { 'id': office.id }) }}">
-                                            <i class="fa fa-unlock m-r-5"></i>
-                                            Deactivate
-                                        </a>
-                                    {% else %}
-                                        <a class="node-action dropdown-item common-modal" data-toggle="modal"  data-target="#activate_record" data-route="{{ path('office_toggle_activation', { 'id': office.id }) }}">
-                                            <i class="fa fa-lock m-r-5"></i>
-                                            Activate
-                                        </a>
-                                    {% endif %}
-                                </div>
-{#                                <a class="node-action dropdown-item common-modal" data-toggle="modal"  data-target="#office_entry" data-route="{{ path('office_entry', { 'id': office.id }) }}">#}
-{#                                    <i class="fa fa-lock m-r-5"></i>#}
-{#                                    Entry#}
-{#                                </a>#}
-                                <a class="dropdown-item" href="{{ path('office_entry', { 'id': office.id }) }}"><i class="fa fa-pencil m-r-5"></i> Entry</a>
-                            </div>
-                        </td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
+{% for key, office in offices %}
+    {% set companyHeading = office.title %}
+    <div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
+        <div class="profile-widget">
+            <div class="profile-img">
+                <a href="#" class="avatar">
+{#                    <img src="{{ asset('build/assets/public/assets/img/profiles/avatar-29.jpg') |imagine_filter('profile_pic') }}" alt="profile-pic"/>#}
+                </a>
             </div>
-{% endblock %}
+            <div class="dropdown profile-action">
+                {% if ADMIN_USER %}
+                    <a class="dropdown-item" href="{{ path('office_edit', { 'id': office.id }) }}" data-toggle="" data-target=""><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                    <a class="dropdown-item delete-modal" href="javascript:void(0);" data-route="{{ path('office_delete', {'id': office.id }) }}" data-toggle="modal" data-target="#delete_employee"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                {% endif %}
+            </div>
+            <h5 class="user-name m-t-10 mb-0 text-ellipsis"><a href="javascript:void(0);"><span class="text-secondary">#{{ office.id }}</span> {{ office.title }} </a></h5>
+            <h6 class="company-name m-t-10 mb-0 text-ellipsis"><a href="javascript:void(0);"><i class="fa fa-building" aria-hidden="true" style="color: #ff9b44"></i>&nbsp;{{ office.address }}</a></h6>
+            <div class="small text-muted">{{ office.phoneNumber }}</div>
+        </div>
+    </div>
+{% endfor %}

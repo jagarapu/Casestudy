@@ -4,9 +4,13 @@ namespace App\Entity;
 
 use App\Repository\OfficeOccupancyRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Doctrine\ORM\Mapping\UniqueConstraint;
 
 /**
+ * @ORM\Table(name="office_occupancy", uniqueConstraints={@UniqueConstraint(name="unique_user_occupancy", columns={"user_id", "office_id"})})
  * @ORM\Entity(repositoryClass=OfficeOccupancyRepository::class)
+ * @UniqueEntity(fields="user",message="User already exists in database")
  */
 class OfficeOccupancy
 {

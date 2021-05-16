@@ -4,6 +4,7 @@ namespace App\Form\Type;
 
 use App\Entity\Office;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -25,6 +26,25 @@ class OfficeType extends AbstractType
                 ]
             )
             ->add(
+                'city', TextType::class,
+                [
+                    'attr' => ['class' => 'form-control'],
+                ]
+            )
+            ->add('country',CountryType::class,[
+                'placeholder' => 'Select Country of residence',
+                'label' => 'Country of residence',
+                'attr' => [
+                    'class' => 'form-control chosen-select',
+                ],
+            ])
+            ->add('state', TextType::class, [
+                'label' => 'State/Province',
+                'attr' => [
+                    'class' => 'form-control'
+                ],
+            ])
+            ->add(
                 'postCode', TextType::class,
                 [
                     'attr' => ['class' => 'form-control'],
@@ -43,6 +63,7 @@ class OfficeType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Office::class,
+            'validation_groups' => [ 'office'],
         ]);
     }
 }

@@ -18,7 +18,7 @@ use Symfony\Component\Security\Core\Security;
 /**
  * Class UserController
  * @package App\Controller
- * @Route("techm")
+ * @Route("techm/user")
  */
 class UserController extends AbstractController
 {
@@ -33,14 +33,14 @@ class UserController extends AbstractController
     /**
      * Lists all user entities.
      *
-     * @Route("/", name="user_index")
+     * @Route("/list", name="user_index")
      */
     public function index(UserManager $userManager)
     {
         $em = $this->getDoctrine()->getManager();
         $users = $em->getRepository(User::class)->findAll();
 
-        return $this->render('user/index.html.twig', [
+        return $this->render('user/list.html.twig', [
             'users' => $users,
         ]);
     }

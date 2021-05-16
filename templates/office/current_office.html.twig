@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Current Office
+{% endblock %}
+
+{% block header %}
+    <h3 class="page-title">Current Office</h3>
+{% endblock %}
+
+{% block body %}
+<div class="card mb-0">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="profile-view">
+                    <div class="profile-img-wrap">
+                        <div class="profile-img">
+                            <a href="">
+                                <img src="assets/img/profiles/avatar-19.jpg" alt="">
+                            </a>
+                        </div>
+                    </div>
+                    <div class="profile-basic">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="profile-info-left">
+                                    <h3 class="user-name m-t-0">{{ office.title }}</h3>
+                                    <h5 class="company-role m-t-0 mb-0">Created By</h5>
+                                    <small class="text-muted">{{ office.createdBy }}</small>
+                                    <div class="staff-id">Employee ID : {{ user.employeeId }}</div>
+                                    <div class="staff-msg"><a href="{{ path('office_exit', {'id': office.id}) }}" class="btn btn-custom">Exit</a></div>
+                                </div>
+                            </div>
+                            <div class="col-md-7">
+                                <ul class="personal-info">
+                                    <li>
+                                        <span class="title">Phone:</span>
+                                        <span class="text"><a href="">{{ office.phoneNumber }}</a></span>
+                                    </li>
+                                    <li>
+                                        <span class="title">City:</span>
+                                        <span class="text"><a href="">{{ office.city }}</a></span>
+                                    </li>
+                                    <li>
+                                        <span class="title">Country:</span>
+                                        <span class="text">{{ office.country }}</span>
+                                    </li>
+                                    <li>
+                                        <span class="title">Address:</span>
+                                        <span class="text">{{ office.address }}</span>
+                                    </li>
+                                    <li>
+                                        <span class="title">State:</span>
+                                        <span class="text">{{ office.state }}</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

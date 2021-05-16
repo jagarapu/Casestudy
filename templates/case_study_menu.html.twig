@@ -4,33 +4,27 @@
 
 <div id="sidebar-menu" class="sidebar-menu">
     <ul>
+        <li>
+            <a class=" {% if (requestRoute in [ 'office_list']) %}active {% endif %}"
+               href="{{ path('office_list') }}">
+                <i class="la la-sitemap m-r-5"></i>
+                <span class="hide-menu">Offices</span>
+            </a>
+        </li>
+        <li>
+            <a class=" {% if (requestRoute in [ 'view_current_office']) %}active {% endif %}"
+               href="{{ path('view_current_office', {'id': app.user.id}) }}">
+                <i class="la la-sitemap m-r-5"></i>
+                <span class="hide-menu">Current Office</span>
+            </a>
+        </li>
         {% if ADMIN_USER %}
-            <li class="menu-title">
-                <span>Side menu</span>
-            </li>
-            <li class="submenu">
-                <a href="#"><i class="la la-cube"></i> <span> Users</span> <span class="menu-arrow"></span></a>
-                <ul style="display: none;">
-                    {% if ADMIN_USER or EMPLOYEE_USER%}
-                        <li>
-                            <a class=" {% if (requestRoute in [ 'home_page']) %}active {% endif %}"
-                               href="{{ path('home_page') }}">
-                                <i class="la la-sitemap m-r-5"></i>
-                                <span class="hide-menu">Home page</span>
-                            </a>
-                        </li>
-                    {% endif %}
-                    {% if ADMIN_USER %}
-                        <li>
-                            <a class=" {% if (requestRoute in [ 'user_index','user_new',
-                                'user_edit', 'user_delete']) %}active {% endif %}"
-                               href="{{ path('user_index') }}">
-                                <i class="la la-user m-r-5"></i>
-                                <span class="hide-menu">Users</span>
-                            </a>
-                        </li>
-                    {% endif %}
-                </ul>
+            <li>
+                <a class=" {% if (requestRoute in [ 'user_index']) %}active {% endif %}"
+                   href="{{ path('user_index') }}">
+                    <i class="la la-sitemap m-r-5"></i>
+                    <span class="hide-menu">Employees list</span>
+                </a>
             </li>
         {% endif %}
     </ul>
