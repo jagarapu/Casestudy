@@ -43,8 +43,10 @@ class OfficeCapacityCheck
         $officeWiseOccupancy = $this->entityManager->getRepository(OfficeOccupancy::class)
                                                     ->fetchOfficeOccupancyData();
 
-        if (isset($officeWiseOccupancy[$office->getTitle()]) === $office->getOfficeCapacity()) {
-            return false;
+        if (isset($officeWiseOccupancy[$office->getTitle()])) {
+            if ((int)$officeWiseOccupancy[$office->getTitle()] == (int)$office->getOfficeCapacity()) {
+                return false;
+            }
         }
         return true;
     }
