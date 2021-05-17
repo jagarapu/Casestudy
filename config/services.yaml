@@ -32,6 +32,10 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
+    mail_manager:
+        class: App\Service\MailManager
+        arguments: ["@doctrine.orm.entity_manager" ,"@mailer","@twig","%mailer_user%"]
+
     password_constraint:
         class: App\Validator\User\PasswordConstraintValidator
         arguments: ["@doctrine.orm.default_entity_manager", "@security.encoder_factory"]

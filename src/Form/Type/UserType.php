@@ -17,7 +17,6 @@ class UserType extends AbstractType
     {
         $builder
             ->add('username',TextType::class,[
-                'required'=> true,
                 'attr' => ['class' => 'form-control',
                 ],
             ])
@@ -30,13 +29,19 @@ class UserType extends AbstractType
             ->add(
                 'lastName', TextType::class,
                 [
-                    'attr' => ['class' => 'form-control'],
+                    'required' => false,
+                    'attr' => [
+                        'class' => 'form-control'
+                    ],
                 ]
             )
             ->add(
                 'employeeId', TextType::class,
                 [
-                    'attr' => ['class' => 'form-control'],
+                    'required' => false,
+                    'attr' => [
+                        'class' => 'form-control',
+                    ],
                 ]
             )
             ->add('email',EmailType::class,[
@@ -65,6 +70,7 @@ class UserType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            'validation_groups' => [ 'userregistration'],
         ]);
     }
 

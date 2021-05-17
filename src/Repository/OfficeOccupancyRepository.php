@@ -31,6 +31,7 @@ class OfficeOccupancyRepository extends ServiceEntityRepository
         $qb->select("oc.status as status")
             ->where('oc.office = :officeId')
             ->andWhere('oc.user = :userId')
+            ->andWhere('oc.exitTime IS NULL')
             ->setParameter('officeId', $office->getId())
             ->setParameter('userId', $user->getId())
         ;
@@ -67,9 +68,14 @@ class OfficeOccupancyRepository extends ServiceEntityRepository
             ->leftJoin('oc.office', 'o')
             ->leftJoin('oc.user', 'u')
             ->where('u.id = :userId')
-            ->setParameter('userId', $user->getId());
+            ->setParameter('userId', $user->getId())
+            ->andWhere('oc.exitTime Is NULL')
+        ;
 
-        return $qb->getQuery()->getResult();
+        $result =  array_column($qb->getQuery()
+            ->getResult(), 'id');
+
+        return $result;
     }
 
     public function getUserAlreadyOccupiedOfficeStatus($user)
@@ -83,5 +89,21 @@ class OfficeOccupancyRepository extends ServiceEntityRepository
         ;
 
         return $qb->getQuery()->getResult();
+    }
+
+    public function findOccupiedOffice(User $user)
+    {
+        $qb = $this->createQueryBuilder('oc')
+            ->select('oc.id')
+            ->leftJoin('oc.user', 'u')
+            ->where('u.id = :userId')
+            ->setParameter('userId', $user->getId())
+            ->andWhere('oc.exitTime Is NULL')
+        ;
+
+        $result =  array_column($qb->getQuery()
+            ->getResult(), 'id');
+
+        return $result;
     }
 }

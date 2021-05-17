@@ -49,7 +49,7 @@ class UserController extends AbstractController
      *
      * @Route("/user/new", name="user_new")
      */
-    public function new(Request $request)
+    public function new(Request $request, MailManager $mailManager)
     {
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
@@ -71,8 +71,14 @@ class UserController extends AbstractController
 
             $em->persist($user);
             $em->flush();
+            $mailManager->registration($user);
 
-            return $this->redirectToRoute('home_page');
+            $this->get('session')->getFlashBag()->set(
+                'flashSuccess',
+                $user->getUsername() . ' user successfully created'
+            );
+
+            return $this->redirectToRoute('user_index');
         }
 
         return $this->render('user/new.html.twig', [
@@ -102,25 +108,6 @@ class UserController extends AbstractController
             'user' => $user,
             'edit_form' => $editForm->createView()
         ]);
-    }
-
-    /**
-     * Activates/Deactiavtes a user entity.
-     *
-     * @Route("/{id}/toggle/activation", name="user_toggle_activation")
-     */
-    public function toggleActivation(Request $request, User $user)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $user->setIsEnabled(!($user->getIsEnabled()));
-        $em->flush();
-        if($user->getIsEnabled()){
-            $message = $user->getUsername() . ' user activated successfully';
-        } else {
-            $message = $user->getUsername() . ' user deactivated successfully';
-        }
-
-        return $this->redirectToRoute('user_index');
     }
 
     /**

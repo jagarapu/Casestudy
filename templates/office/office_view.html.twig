@@ -41,7 +41,7 @@
                                             {% elseif officeOccupancyStatus is defined and flag and (officeOccupancyStatus|length ==0 or officeOccupancyStatus[0] == 2) %}
                                                 <div class="staff-msg">
                                                     <a data-toggle="modal"  data-target="#entry_office" data-route="{{ path('office_entry', {'id': office.id}) }}"
-                                                        class="btn btn-custom common-modal">Entry</a>
+                                                       class="btn btn-custom common-modal">Entry</a>
                                                 </div>
                                             {% elseif officeOccupancy is defined and officeOccupancyStatus|length and officeOccupancyStatus[0] == 1 %}
                                                 <div class="staff-msg">
@@ -49,8 +49,9 @@
                                                        class="btn btn-custom common-modal">Exit</a>
                                                 </div>
                                             {% endif %}
+                                            &nbsp; &nbsp;
+                                            <a href="{{ path('office_list') }}" class="btn btn-custom">Office list</a>
                                         </div>
-                                        <a href="{{ path('office_list') }}" class="btn btn-custom">Office list</a>
                                     </div>
                                     <div class="col-md-7">
                                         <ul class="personal-info">
@@ -80,7 +81,7 @@
                             </div>
                         </div>
                     </div>
-                    {% else %}
+                {% else %}
                     You can enter any office
                     &nbsp;<a href="{{ path('office_list') }}">Office list</a>
                 {% endif %}

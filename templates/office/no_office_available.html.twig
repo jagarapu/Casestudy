@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    No Office Available
+{% endblock %}
+
+{% block header %}
+    <h3 class="page-title">No Office Available</h3>
+{% endblock %}
+
+{% block body %}
+    <div class="card mb-0">
+        <div class="card-body">
+            <div class="row">
+                {% if office is not defined %}
+                No offices available please contact admin
+                {% else %}
+                No offices available please enter office first
+                &nbsp;<a href="{{ path('office_list') }}">Offices</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

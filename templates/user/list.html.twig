@@ -51,15 +51,6 @@
                         <td class="text-right">
                             <div class="dropdown dropdown-action">
                                 <a class="dropdown-item" href="{{ path('user_edit', { 'id': user.id }) }}"><i class="fa fa-pencil m-r-5"></i></a>
-                                {% if user.isEnabled %}
-                                    <a class="node-action dropdown-item common-modal" data-toggle="modal"  data-target="#deactivate_record" data-route="{{ path('user_toggle_activation', { 'id': user.id }) }}">
-                                        <i class="fa fa-unlock m-r-5"></i>
-                                    </a>
-                                {% else %}
-                                    <a class="node-action dropdown-item common-modal" data-toggle="modal"  data-target="#activate_record" data-route="{{ path('user_toggle_activation', { 'id': user.id }) }}">
-                                        <i class="fa fa-lock m-r-5"></i>
-                                    </a>
-                                {% endif %}
                             </div>
                         </td>
                         </tr>

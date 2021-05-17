@@ -58,7 +58,7 @@ class MailManager
             ]
         );
 
-        $message = (new \Swift_Message('TraceRecruit Registration'))
+        $message = (new \Swift_Message('TechMahindra Registration'))
             ->setFrom($this->mailerUser)
             ->setTo($user->getEmail())
             ->setBody($emailTemplate,'text/html')
@@ -84,7 +84,7 @@ class MailManager
             ]
         );
 
-        $message = (new \Swift_Message('TraceRecruit Forgot Password'))
+        $message = (new \Swift_Message('TechMahindra Forgot Password'))
             ->setFrom($this->mailerUser)
             ->setTo($user->getEmail())
             ->setBody($emailTemplate,'text/html')
@@ -110,7 +110,7 @@ class MailManager
             ]
         );
 
-        $message = (new \Swift_Message('TraceRecruit Change Password'))
+        $message = (new \Swift_Message('TechMahindra Change Password'))
             ->setFrom($this->mailerUser)
             ->setTo($user->getEmail())
             ->setBody($emailTemplate,'text/html')

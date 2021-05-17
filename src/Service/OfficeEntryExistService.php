@@ -36,17 +36,10 @@ class OfficeEntryExistService
      * @param $office
      * @throws \Exception
      */
-    public function entryOffice(Office $office)
+    public function entryEmployeeOffice(Office $office)
     {
         $user = $this->tokenStorage->getToken()->getUser();
-        $officeOccupancy = $this->entityManager->getRepository(OfficeOccupancy::class)
-            ->findBy(['user' => $user]);
-
-        if ($officeOccupancy) {
-            $officeOccupancy = $officeOccupancy[0];
-        } else {
-            $officeOccupancy = new OfficeOccupancy();
-        }
+        $officeOccupancy = new OfficeOccupancy();
         $officeOccupancy->setUser($user);
         $officeOccupancy->setOffice($office);
         $officeOccupancy->setEntryTime(new \DateTime());
@@ -54,6 +47,7 @@ class OfficeEntryExistService
         $officeOccupancy->setStatus(1);
         $this->entityManager->persist($officeOccupancy);
         $this->entityManager->flush();
+        dump($officeOccupancy);
 
         return $officeOccupancy;
     }

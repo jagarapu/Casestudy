@@ -65,7 +65,9 @@ class OfficeType extends AbstractType
                 ]
             )
             ->add('logo',FileType::class, [
-                'label' => 'Select Logo','data_class' => null, 'required'   => false
+                'label' => 'Select Logo',
+                'data_class' => null,
+                'required'   => false
             ])
         ;
     }

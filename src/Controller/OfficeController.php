@@ -5,12 +5,10 @@ namespace App\Controller;
 use App\Entity\Office;
 use App\Entity\OfficeOccupancy;
 use App\Entity\SearchFilter;
-use App\Entity\User;
 use App\Form\Type\OfficeSearchType;
 use App\Form\Type\OfficeType;
 use App\Service\OfficeCapacityCheck;
 use App\Service\OfficeEntryExistService;
-use App\Service\UserManager;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,7 +28,7 @@ class OfficeController extends AbstractController
      * @Route("/new", name="office_new")
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function new(Request $request, UserManager $userManager)
+    public function new(Request $request)
     {
         $office = new Office();
         $form = $this->createForm(OfficeType::class, $office);
@@ -55,7 +53,7 @@ class OfficeController extends AbstractController
      *
      * @Route("/{id}/edit", name="office_edit")
      */
-    public function edit(Request $request, Office $office, UserManager $userManager)
+    public function edit(Request $request, Office $office)
     {
         $editForm = $this->createForm(OfficeType::class, $office);
         $editForm->handleRequest($request);
@@ -97,7 +95,7 @@ class OfficeController extends AbstractController
             SearchFilter::OBJECT_PER_PAGE /*limit per page*/
         );
 
-        return $this->render('office/view_office.html.twig', [
+        return $this->render('office/office_list.html.twig', [
             'offices' => $pagination,
             'officeWiseOccupancy' => $officeWiseOccupancy,
             'form' => $searchForm->createView(),
@@ -109,28 +107,11 @@ class OfficeController extends AbstractController
      *
      * @Route("/{id}/entry", name="office_entry")
      */
-    public function entryOffice(Office $office, OfficeEntryExistService $officeEntryExistService, OfficeCapacityCheck $officeCapacityCheck)
+    public function entryOffice(Office $office, OfficeEntryExistService $officeEntryExistService)
     {
-        $user = $this->getUser();
-        $em = $this->getDoctrine()->getManager();
-        $flag = $officeEntryExistService->checkAlreadyEnterToOffice($user);
+        $officeEntryExistService->entryEmployeeOffice($office);
 
-        $officeOccupancy = $officeEntryExistService->entryOffice($office);
-        $officeOccupancyStatusByUser = $em->getRepository(OfficeOccupancy::class)
-            ->findOfficeOccupancyStatus($user, $office);
-        $checkOfficeCapacity = $officeCapacityCheck->checkOfficeCapacity($office);
-
-        return $this->render(
-            'office/current_office.html.twig',
-            [
-                'user' => $officeOccupancy->getUser(),
-                'office' => $officeOccupancy->getOffice(),
-                'officeOccupancy' => $officeOccupancy,
-                'officeOccupancyStatus' => $officeOccupancyStatusByUser,
-                'checkOfficeCapacity' => $checkOfficeCapacity,
-                'flag' => $flag,
-            ]
-        );
+        return $this->redirectToRoute('view_current_office');
     }
 
     /**
@@ -153,12 +134,31 @@ class OfficeController extends AbstractController
         $user = $this->getUser();
         $em = $this->getDoctrine()->getManager();
         $officeId = $em->getRepository(OfficeOccupancy::class)->getOffice($user);
+
         $office = null;
         $officeOccupancy = null;
+        $officeOccupancyStatusByUser = null;
+
         if ($officeId) {
-            $office = $em->getRepository(Office::class)->find($officeId);
-            $officeOccupancy = $em->getRepository(OfficeOccupancy::class)->findOneBy(['user' => $user, 'office' => $office]);
+            $office = $em->getRepository(Office::class)->find($officeId[0]);
+            $officeOccupancyIdResult = $em->getRepository(OfficeOccupancy::class)->findOccupiedOffice($user);
+            if ($officeOccupancyIdResult) {
+                $officeOccupancy = $em->getRepository(OfficeOccupancy::class)->find($officeOccupancyIdResult[0]);
+            }
+            $officeOccupancyStatusByUser = $em->getRepository(OfficeOccupancy::class)
+                ->findOfficeOccupancyStatus($user, $office);
         }
+
+        if (empty($office)) {
+            return $this->render(
+                'office/no_office_available.html.twig',
+                [
+                    'user' => $user,
+                    'office' => $office,
+                ]
+            );
+        }
+
         $flag = $officeEntryExistService->checkAlreadyEnterToOffice($user);
         $checkOfficeCapacity = $officeCapacityCheck->checkOfficeCapacity($office);
         return $this->render(
@@ -168,6 +168,7 @@ class OfficeController extends AbstractController
                 'office' => $office,
                 'officeOccupancy' => $officeOccupancy,
                 'checkOfficeCapacity' => $checkOfficeCapacity,
+                'officeOccupancyStatus' => $officeOccupancyStatusByUser,
                 'flag' => $flag,
             ]
         );
@@ -182,7 +183,11 @@ class OfficeController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $officeOccupancyStatusByUser = $em->getRepository(OfficeOccupancy::class)
             ->findOfficeOccupancyStatus($user, $office);
-        $officeOccupancy = $em->getRepository(OfficeOccupancy::class)->findOneBy(['user' => $user, 'office' => $office]);
+        $officeOccupancy = null;
+        $officeOccupancyIdResult = $em->getRepository(OfficeOccupancy::class)->findOccupiedOffice($user);
+        if ($officeOccupancyIdResult) {
+            $officeOccupancy = $em->getRepository(OfficeOccupancy::class)->find($officeOccupancyIdResult[0]);
+        }
         $flag = $officeEntryExistService->checkAlreadyEnterToOffice($user);
         $checkOfficeCapacity = $officeCapacityCheck->checkOfficeCapacity($office);
         
