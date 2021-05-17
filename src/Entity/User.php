@@ -27,7 +27,7 @@ class User implements UserInterface
     const PASSWORD_LENGTH = 8;
 
     const ROLE_DEFAULT = 'ROLE_USER';
-    const ROLE_ADMIN = 'ROLE_SUPER_ADMIN';
+    const ROLE_ADMIN = 'ROLE_ADMIN';
     const ROLE_EMPLOYEE = 'ROLE_EMPLOYEE';
 
     const SALUTATION_MR = 'Mister';

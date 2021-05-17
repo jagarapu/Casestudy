@@ -17,7 +17,7 @@
                     <div class="card">
                         <div class="card-body">
                             <center class="m-t-30">
-                                <img src="#"
+                                <img src="{{ asset('build/assets/public/image/avatar.jpg') |imagine_filter('office_logo') }}" alt="profile-pic"
                                      class="rounded-circle" alt="profile-pic"/>
                                 <h3 class="card-title m-t-10">{{ user.username }}</h3>
                             </center>

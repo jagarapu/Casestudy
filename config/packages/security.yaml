@@ -51,4 +51,4 @@ security:
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/forgot-password, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/techm, roles: IS_AUTHENTICATED_FULLY }
-#        - { path: ^/$, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/user, roles: IS_AUTHENTICATED_FULLY }

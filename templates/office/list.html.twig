@@ -7,7 +7,7 @@
                     {% if office.logo %}
                         <img src="{{ asset('uploads/logos/' ~ office.logo) |imagine_filter('office_logo') }}" alt="profile-pic"/>
                     {% else %}
-                        <img src="{{ asset('assets/images/avatar.jpg') |imagine_filter('office_logo') }}" alt="profile-pic"/>
+                        <img src="{{ asset('build/assets/public/image/avatar.jpg') |imagine_filter('office_logo') }}" alt="profile-pic"/>
                     {% endif %}
                 </a>
             </div>

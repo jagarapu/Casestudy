@@ -34,6 +34,17 @@
                                             <h5 class="company-role m-t-0 mb-0">Created By</h5>
                                             <small class="text-muted">{{ office.createdBy }}</small>
                                             <div class="staff-id">Employee ID : {{ user.employeeId }}</div>
+                                            <div class="staff-id">Availability</div>
+                                            <div class="small doj text-muted">Occupancy:
+                                            {% if officeWiseOccupancy is defined and officeWiseOccupancy|length and officeWiseOccupancy[office.title] is defined %}
+                                                {{ officeWiseOccupancy[office.title] }}
+                                            {% else %}
+                                                0
+                                            {% endif %}
+                                            </div>
+                                            <div class="small doj text-muted">
+                                                Capacity: {{ office.officeCapacity }}
+                                            </div>
                                             {% if checkOfficeCapacity is defined and not checkOfficeCapacity %}
                                                 <div class="staff-msg">
                                                     Office exceed with capacity please choose different office form the office list
@@ -43,24 +54,24 @@
                                                     <a data-toggle="modal"  data-target="#entry_office" data-route="{{ path('office_entry', {'id': office.id}) }}"
                                                         class="btn btn-custom common-modal">Entry</a>
                                                 </div>
-                                            {% elseif officeOccupancy is defined and officeOccupancyStatus|length and officeOccupancyStatus[0] == 1 %}
+                                            {% endif %}
+                                            {% if officeOccupancy is defined and officeOccupancyStatus|length and officeOccupancyStatus[0] == 1 %}
                                                 <div class="staff-msg">
                                                     <a data-toggle="modal"  data-target="#exit_office" data-route="{{ path('office_exit', {'id': officeOccupancy.id}) }}"
                                                        class="btn btn-custom common-modal">Exit</a>
                                                 </div>
                                             {% endif %}
                                         </div>
-                                        <a href="{{ path('office_list') }}" class="btn btn-custom">Office list</a>
                                     </div>
                                     <div class="col-md-7">
                                         <ul class="personal-info">
                                             <li>
                                                 <span class="title">Phone:</span>
-                                                <span class="text"><a href="">{{ office.phoneNumber }}</a></span>
+                                                <span class="text">{{ office.phoneNumber }}</a></span>
                                             </li>
                                             <li>
                                                 <span class="title">City:</span>
-                                                <span class="text"><a href="">{{ office.city }}</a></span>
+                                                <span class="text">{{ office.city }}</a></span>
                                             </li>
                                             <li>
                                                 <span class="title">Country:</span>
@@ -73,6 +84,10 @@
                                             <li>
                                                 <span class="title">State:</span>
                                                 <span class="text">{{ office.state }}</span>
+                                            </li>
+                                            <br><br><br>
+                                            <li>
+                                                <a href="{{ path('office_list') }}" class="btn btn-custom">Office list</a>
                                             </li>
                                         </ul>
                                     </div>

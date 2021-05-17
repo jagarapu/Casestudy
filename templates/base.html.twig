@@ -9,6 +9,8 @@
 
         {% endblock %}
     </title>
+    <!-- Favicon icon -->
+    <link rel="shortcur icon" type="image/png" sizes="18x18" href="{{ asset('build/assets/public/image/techm_logo.png') |imagine_filter('favicon') }}" >
     {% block stylesheets %}
         {{ encore_entry_link_tags('case-study-base') }}
     {% endblock %}
@@ -53,7 +55,7 @@
         <!-- Logo -->
         <div class="header-left">
             <a href="{{ path('office_list') }}" class="logo">
-                <img src="#" width="125" height="60" alt="Tech Mahindra" class="dark-logo" style="padding: 3px;">
+                <img src="{{ asset('build/assets/public/image/techm_logo.png') }}" width="125" height="60" alt="Tech Mahindra" class="dark-logo" style="padding: 3px;">
             </a>
         </div>
         <!-- /Logo -->

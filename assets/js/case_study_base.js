@@ -36,7 +36,7 @@ import 'datatables';
 import 'moment';
 import 'jquery-confirm';
 import 'chosen-js';
-//import 'bootstrap-multiselect/dist/js/bootstrap-multiselect';
+import './bootstrap-multiselect';
 import 'bootstrap-datepicker';
 import 'jquery-blockui';
 import '../js/common.js';
@@ -52,6 +52,8 @@ Routing.setRoutingData(routes);
 window.Routing = Routing;
 
 $(document).ready(function () {
+    $('.radio_multiselect').multiselect();
+
     toastr.options = {
         "closeButton": true
     };

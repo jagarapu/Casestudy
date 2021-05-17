@@ -153,7 +153,7 @@ class UserController extends AbstractController
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $userManager->manageUpdatedPassword($user, false);
-//                $mailManager->changePasswordEmail($user);
+                $mailManager->changePasswordEmail($user);
                 $this->get('session')->getFlashBag()->add('flashSuccess', 'Password Changed Successfully!');
                 return $this->redirectToRoute('office_list');
             }

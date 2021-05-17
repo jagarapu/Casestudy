@@ -161,6 +161,7 @@ class OfficeController extends AbstractController
 
         $flag = $officeEntryExistService->checkAlreadyEnterToOffice($user);
         $checkOfficeCapacity = $officeCapacityCheck->checkOfficeCapacity($office);
+        $officeWiseOccupancy = $em->getRepository(OfficeOccupancy::class)->fetchOfficeOccupancyData();
         return $this->render(
             'office/current_office.html.twig',
             [
@@ -169,6 +170,7 @@ class OfficeController extends AbstractController
                 'officeOccupancy' => $officeOccupancy,
                 'checkOfficeCapacity' => $checkOfficeCapacity,
                 'officeOccupancyStatus' => $officeOccupancyStatusByUser,
+                'officeWiseOccupancy' => $officeWiseOccupancy,
                 'flag' => $flag,
             ]
         );
@@ -190,12 +192,15 @@ class OfficeController extends AbstractController
         }
         $flag = $officeEntryExistService->checkAlreadyEnterToOffice($user);
         $checkOfficeCapacity = $officeCapacityCheck->checkOfficeCapacity($office);
+
+        $officeWiseOccupancy = $em->getRepository(OfficeOccupancy::class)->fetchOfficeOccupancyData();
         
         return $this->render(
             'office/current_office.html.twig',
             [
                 'user' => $user,
                 'office' => $office,
+                'officeWiseOccupancy' => $officeWiseOccupancy,
                 'officeOccupancyStatus' => $officeOccupancyStatusByUser,
                 'officeOccupancy' => $officeOccupancy,
                 'checkOfficeCapacity' => $checkOfficeCapacity,
