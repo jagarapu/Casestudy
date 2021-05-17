@@ -210,14 +210,22 @@ class OfficeController extends AbstractController
      * @Route("/office/{id}/delete", name="office_delete")
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function delete(Office $office)
+    public function delete(Office $office, OfficeCapacityCheck $officeCapacityCheck)
     {
         $em = $this->getDoctrine()->getManager();
-        $em->remove($office);
-        $em->flush();
+        $checkOfficeCapacityStatus = $officeCapacityCheck->checkOfficeCapacity($office);
+        if ($checkOfficeCapacityStatus) {
+            $em->remove($office);
+            $em->flush();
+            $this->get('session')->getFlashBag()->set(
+                'flashSuccess',
+                $office->getTitle() . ' office deleted successfully'
+            );
+        }
         $this->get('session')->getFlashBag()->set(
-            'flashSuccess',
-            $office->getTitle() . ' office deleted successfully'
+            'flashError',
+            $office->getTitle() . ' this office is occupied with employees and then cannot be deleted.
+             please ensure there are zero employees logged in this office'
         );
 
         return $this->redirectToRoute('office_list');
