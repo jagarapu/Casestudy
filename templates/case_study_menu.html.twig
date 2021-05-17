@@ -15,7 +15,7 @@
             <li>
                 <a class=" {% if (requestRoute in [ 'view_current_office']) %}active {% endif %}"
                    href="{{ path('view_current_office') }}">
-                    <i class="la la-sitemap m-r-5"></i>
+                    <i class="la la-external-link-square m-r-5"></i>
                     <span class="hide-menu">Current Office</span>
                 </a>
             </li>
@@ -24,8 +24,8 @@
             <li>
                 <a class=" {% if (requestRoute in [ 'user_index']) %}active {% endif %}"
                    href="{{ path('user_index') }}">
-                    <i class="la la-sitemap m-r-5"></i>
-                    <span class="hide-menu">Employees list</span>
+                    <i class="la la-user-plus m-r-5"></i>
+                    <span class="hide-menu">Employees</span>
                 </a>
             </li>
         {% endif %}
