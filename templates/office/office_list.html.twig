@@ -28,6 +28,7 @@
 {% block body %}
     {% set ADMIN_USER =  (app.user and is_granted('ROLE_ADMIN')) %}
     {% set EMPLOYEE_USER =  (app.user and is_granted('ROLE_EMPLOYEE')) %}
+    {% include 'office/flash_messages.html.twig' %}
     {% include 'office/search_office.html.twig' %}
     <br>
     <br>

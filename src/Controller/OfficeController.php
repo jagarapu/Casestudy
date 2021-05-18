@@ -38,6 +38,7 @@ class OfficeController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $em->persist($office);
             $em->flush();
+            $this->addFlash('success', $office->getTitle() . ' Office Created Successfully!');
 
             return $this->redirectToRoute('office_list');
         }
@@ -61,6 +62,7 @@ class OfficeController extends AbstractController
         if ($editForm->isSubmitted() && $editForm->isValid()) {
 
             $this->getDoctrine()->getManager()->flush();
+            $this->addFlash('success', $office->getTitle() . ' Office Modified Successfully!');
 
             return $this->redirectToRoute('office_list');
         }
@@ -219,20 +221,16 @@ class OfficeController extends AbstractController
     public function delete(Office $office, OfficeCapacityCheck $officeCapacityCheck)
     {
         $em = $this->getDoctrine()->getManager();
-        $checkOfficeCapacityStatus = $officeCapacityCheck->checkOfficeCapacity($office);
+        $checkOfficeCapacityStatus = $officeCapacityCheck->checkDeleteOfficeAllowedOrNot($office);
+
         if ($checkOfficeCapacityStatus) {
             $em->remove($office);
             $em->flush();
-            $this->get('session')->getFlashBag()->set(
-                'flashSuccess',
-                $office->getTitle() . ' office deleted successfully'
-            );
+            $this->addFlash('success', $office->getTitle() . ' Office deleted Successfully!');
+        } else {
+            $this->addFlash('success', $office->getTitle() . ' This office is occupied with employees and then cannot be deleted.
+             please ensure there are zero employees logged in this office');
         }
-        $this->get('session')->getFlashBag()->set(
-            'flashError',
-            $office->getTitle() . ' this office is occupied with employees and then cannot be deleted.
-             please ensure there are zero employees logged in this office'
-        );
 
         return $this->redirectToRoute('office_list');
     }

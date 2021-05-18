@@ -64,11 +64,7 @@ class UserController extends AbstractController
             $em->persist($user);
             $em->flush();
             $mailManager->registration($user);
-
-            $this->get('session')->getFlashBag()->set(
-                'flashSuccess',
-                $user->getUsername() . ' user successfully created'
-            );
+            $this->addFlash('success', $user->getUsername() . ' user successfully created and sent user credentials to user email');
 
             return $this->redirectToRoute('user_index');
         }
@@ -92,6 +88,7 @@ class UserController extends AbstractController
         if ($editForm->isSubmitted() && $editForm->isValid()) {
 
             $this->getDoctrine()->getManager()->flush();
+            $this->addFlash('success', $user->getUsername() . ' user modified successfully');
 
             return $this->redirectToRoute('user_index');
         }
@@ -127,7 +124,7 @@ class UserController extends AbstractController
         } else {
             $this->get('session')->getFlashBag()->set(
                 'flashError',
-                'This email is not registered with SpadeCRM'
+                'This email is not registered with Techmahindra'
             );
         }
 
@@ -146,7 +143,7 @@ class UserController extends AbstractController
             if ($form->isValid()) {
                 $userManager->manageUpdatedPassword($user, false);
                 $mailManager->changePasswordEmail($user);
-                $this->get('session')->getFlashBag()->add('flashSuccess', 'Password Changed Successfully!');
+                $this->addFlash('success', $user->getUsername() . ' Password Changed Successfully!');
                 return $this->redirectToRoute('office_list');
             }
         }

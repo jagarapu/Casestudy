@@ -47,4 +47,19 @@ class OfficeCapacityCheck
         }
         return true;
     }
+
+    /**
+     * @param Office $office
+     * @return bool
+     */
+    public function checkDeleteOfficeAllowedOrNot(Office $office)
+    {
+        $officeWiseOccupancy = $this->entityManager->getRepository(OfficeOccupancy::class)
+            ->fetchOfficeOccupancyData();
+
+        if (isset($officeWiseOccupancy[$office->getTitle()])) {
+            return false;
+        }
+        return true;
+    }
 }
