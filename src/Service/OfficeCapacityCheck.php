@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Service;
-
 
 use App\Entity\Office;
 use App\Entity\OfficeOccupancy;
@@ -11,7 +9,6 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 class OfficeCapacityCheck
 {
-
     /**
      * @var EntityManagerInterface
      */

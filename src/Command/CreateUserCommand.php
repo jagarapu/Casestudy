@@ -20,6 +20,7 @@ class CreateUserCommand extends Command
     private $lastName;
     private $email;
     private $roles = [];
+    private $allowedRoles = [];
 
     private $encoderFactory;
 
@@ -33,6 +34,7 @@ class CreateUserCommand extends Command
     {
         $this->em = $em;
         $this->encoderFactory = $encoderFactory;
+        $this->allowedRoles = ['ROLE_ADMIN', 'ROLE_EMPLOYEE'];
         parent::__construct();
     }
 
@@ -97,15 +99,17 @@ class CreateUserCommand extends Command
         $emailQuestion->setMaxAttempts(3);
 
         $rolesQuestion = new Question('<question>Enter user role: </question>', null);
-        $roles = ['ROLE_ADMIN', 'ROLE_EMPLOYEE'];
+
         $rolesQuestion->setValidator(function ($answer) {
             if (!isset($answer)) {
                 throw new \Exception('Role is a mandatory field');
+            } else if(!in_array($answer, array_values($this->allowedRoles))) {
+                throw new \Exception('Invalid Role please user ROLE_ADMIN or ROLE_EMPLOYEE');
             } else {
                 return $answer;
             }
         });
-        $rolesQuestion->setAutocompleterValues($roles);
+        $rolesQuestion->setAutocompleterValues($this->roles);
         $rolesQuestion->setMaxAttempts(3);
 
         $this->username = $helper->ask($input, $output, $usernameQuestion);

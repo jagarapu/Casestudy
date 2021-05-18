@@ -3,6 +3,7 @@
 namespace App\Tests\Util;
 
 use App\Entity\Office;
+use App\Entity\OfficeOccupancy;
 use App\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -44,11 +45,15 @@ class UserOfficeDataTest extends KernelTestCase
     {
         $users = $this->entityManager->getRepository(User::class)->findAll();
         $offices = $this->entityManager->getRepository(Office::class)->findAll();
+        $officeOccupancies = $this->entityManager->getRepository(OfficeOccupancy::class)->findAll();
         foreach ($users as $user) {
             $this->entityManager->remove($user);
         }
         foreach ($offices as $office) {
             $this->entityManager->remove($office);
+        }
+        foreach ($officeOccupancies as $officeOccupancy) {
+            $this->entityManager->remove($officeOccupancy);
         }
         $this->entityManager->flush();
     }

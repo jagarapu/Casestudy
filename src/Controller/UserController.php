@@ -22,19 +22,11 @@ use Symfony\Component\Security\Core\Security;
 class UserController extends AbstractController
 {
     /**
-     * @Route("/home", name="home_page")
-     */
-    public function home(Request $request)
-    {
-        return $this->render('user/home_page.html.twig');
-    }
-
-    /**
      * Lists all user entities.
      *
      * @Route("/user/list", name="user_index")
      */
-    public function index(UserManager $userManager)
+    public function index()
     {
         $em = $this->getDoctrine()->getManager();
         $users = $em->getRepository(User::class)->findAll();
@@ -171,7 +163,7 @@ class UserController extends AbstractController
     /**
      * @Route("/my-profile", name="my_profile")
      */
-    public function myProfile(Request $request)
+    public function myProfile()
     {
         // logged in user
         $user = $this->getUser();

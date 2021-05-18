@@ -34,12 +34,12 @@ class OfficeOccupancy
     private $status;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="officeOccupancies")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="officeOccupancies", cascade={"persist"})
      */
     private $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Office::class, inversedBy="officeOccupancies")
+     * @ORM\ManyToOne(targetEntity=Office::class, inversedBy="officeOccupancies", cascade={"persist"})
      */
     private $office;
 

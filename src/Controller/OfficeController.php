@@ -109,7 +109,8 @@ class OfficeController extends AbstractController
      */
     public function entryOffice(Office $office, OfficeEntryExistService $officeEntryExistService)
     {
-        $officeEntryExistService->entryEmployeeOffice($office);
+        $user = $this->getUser();
+        $officeEntryExistService->entryEmployeeOffice($user, $office);
 
         return $this->redirectToRoute('view_current_office');
     }

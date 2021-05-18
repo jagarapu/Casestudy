@@ -47,3 +47,8 @@ services:
         arguments: ['@doctrine.orm.entity_manager']
         tags:
             - { name: form.type }
+    # this service using to write test case
+    office_entry_exit:
+        class: App\Service\OfficeEntryExistService
+        arguments: ["@doctrine.orm.entity_manager"]
+        public: true

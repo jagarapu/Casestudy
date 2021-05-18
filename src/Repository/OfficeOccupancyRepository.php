@@ -61,6 +61,10 @@ class OfficeOccupancyRepository extends ServiceEntityRepository
         return $result;
     }
 
+    /**
+     * @param User $user
+     * @return array
+     */
     public function getOffice(User $user)
     {
         $qb = $this->createQueryBuilder('oc')
@@ -78,6 +82,10 @@ class OfficeOccupancyRepository extends ServiceEntityRepository
         return $result;
     }
 
+    /**
+     * @param $user
+     * @return mixed
+     */
     public function getUserAlreadyOccupiedOfficeStatus($user)
     {
         $qb = $this->createQueryBuilder('oc');
@@ -91,6 +99,10 @@ class OfficeOccupancyRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    /**
+     * @param User $user
+     * @return array
+     */
     public function findOccupiedOffice(User $user)
     {
         $qb = $this->createQueryBuilder('oc')
