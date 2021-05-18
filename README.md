@@ -34,6 +34,11 @@ php bin/console server:run (Using webserver bundle)
 or
 symfony server:start
 
+PHPUnit Commands:
+
+./vendor/bin/phpunit tests/Util/UserOfficeDataTest.php
+./vendor/bin/phpunit tests/Service/OfficeEntrySearchByCityTest.php
+./vendor/bin/phpunit
 
 
 Technologies used:
