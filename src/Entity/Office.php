@@ -10,9 +10,10 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\ORM\Mapping\Index;
 
 /**
- * @ORM\Table(name="office")
+ * @ORM\Table(name="office",indexes={@Index(name="search_city", columns={"city"})})
  * @ORM\Entity(repositoryClass=OfficeRepository::class)
  */
 class Office
