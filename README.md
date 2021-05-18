@@ -33,3 +33,14 @@ Run following command to access website
 php bin/console server:run (Using webserver bundle)
 or
 symfony server:start
+
+
+
+Technologies used:
+• PHP 7.4
+•	Backend Framework – PHP Symfony 4
+•	Frontend Framework – Bootstrap 4
+•	Database - MySQL
+•	Test (PHPUnit)
+•	Git
+• AWS
